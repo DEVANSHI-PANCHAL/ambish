@@ -1,18 +1,59 @@
 "use client";
 
+import Image from 'next/image';
 import { motion, useInView } from 'motion/react';
 import { useRef } from 'react';
 import { Combine, MoveVertical, Radio, Cylinder, Scissors, RotateCw, Factory, Wrench } from 'lucide-react';
 
 const products = [
-  { name: 'Concrete Mixers', description: 'High-capacity mixers for efficient concrete production on any site', icon: Combine },
-  { name: 'Material Lifts', description: 'Robust lifting solutions for transporting materials vertically', icon: MoveVertical },
-  { name: 'Tower Hoists', description: 'Reliable vertical transportation — our flagship product since 1985', icon: Radio },
-  { name: 'Road Rollers', description: 'Heavy-duty compaction equipment for road construction', icon: Cylinder },
-  { name: 'Bar Cutting Machines', description: 'Precision cutting for steel reinforcement bars at any gauge', icon: Scissors },
-  { name: 'Bar Bending Machines', description: 'Automated bending solutions for rebar to any angle', icon: RotateCw },
-  { name: 'Batching Plants', description: 'Complete concrete batching systems for large-scale projects', icon: Factory },
-  { name: 'Spare Parts', description: 'Genuine OEM parts for all machinery types, delivered fast', icon: Wrench },
+  {
+    name: 'Concrete Mixers',
+    description: 'High-capacity mixers for efficient concrete production on any site',
+    icon: Combine,
+    image: '/products/construction-machinery-1.jpeg',
+  },
+  {
+    name: 'Material Lifts',
+    description: 'Robust lifting solutions for transporting materials vertically',
+    icon: MoveVertical,
+    image: '/products/construction-machinery-2.jpeg',
+  },
+  {
+    name: 'Tower Hoists',
+    description: 'Reliable vertical transportation — our flagship product since 1985',
+    icon: Radio,
+    image: '/products/construction-machinery-3.jpeg',
+  },
+  {
+    name: 'Road Rollers',
+    description: 'Heavy-duty compaction equipment for road construction',
+    icon: Cylinder,
+    image: '/products/construction-machinery-4.jpeg',
+  },
+  {
+    name: 'Bar Cutting Machines',
+    description: 'Precision cutting for steel reinforcement bars at any gauge',
+    icon: Scissors,
+    image: '/products/construction-machinery-5.jpeg',
+  },
+  {
+    name: 'Bar Bending Machines',
+    description: 'Automated bending solutions for rebar to any angle',
+    icon: RotateCw,
+    image: '/products/construction-machinery-6.jpeg',
+  },
+  {
+    name: 'Batching Plants',
+    description: 'Complete concrete batching systems for large-scale projects',
+    icon: Factory,
+    image: '/products/construction-machinery-1.jpeg',
+  },
+  {
+    name: 'Spare Parts',
+    description: 'Genuine OEM parts for all machinery types, delivered fast',
+    icon: Wrench,
+    image: '/products/construction-machinery-2.jpeg',
+  },
 ];
 
 export default function ProductsSection() {
@@ -65,6 +106,16 @@ export default function ProductsSection() {
                 >
                   {/* Orange corner accent on hover */}
                   <div className="absolute top-0 right-0 w-0 h-0 border-t-[48px] border-r-[48px] border-t-transparent border-r-[#E86A17] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
+                  <div className="relative mb-5 overflow-hidden rounded-[2rem] h-56 bg-gray-100">
+                    <Image
+                      src={product.image}
+                      alt={product.name}
+                      fill
+                      className="object-cover transition-transform duration-500 group-hover:scale-105"
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                    />
+                  </div>
 
                   <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-[#E86A17] to-[#FF8C38] flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-300 shadow-md shadow-[#E86A17]/20">
                     <Icon className="w-7 h-7 text-white" />

@@ -8,12 +8,10 @@ import InquiryForm from './components/InquiryForm';
 import ContactSection from './components/ContactSection';
 import Footer from './components/Footer';
 import FloatingWhatsApp from './components/FloatingWhatsApp';
-import SEO from './components/SEO';
 
 export default function App() {
   return (
     <div className="min-h-screen">
-      <SEO />
       <Header />
       
       <main>
