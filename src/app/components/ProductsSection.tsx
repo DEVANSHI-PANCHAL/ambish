@@ -16,19 +16,19 @@ const products = [
     name: 'Material Lifts',
     description: 'Robust lifting solutions for transporting materials vertically',
     icon: MoveVertical,
-    image: '/products/construction-machinery-2.jpeg',
+    image: '/products/construction-machinery-6.jpeg',
   },
   {
     name: 'Tower Hoists',
     description: 'Reliable vertical transportation — our flagship product since 1985',
     icon: Radio,
-    image: '/products/construction-machinery-3.jpeg',
+    image: '/products/construction-machinery-4.jpeg',
   },
   {
     name: 'Road Rollers',
     description: 'Heavy-duty compaction equipment for road construction',
     icon: Cylinder,
-    image: '/products/construction-machinery-4.jpeg',
+    image: '/products/construction-machinery-2.jpeg',
   },
   {
     name: 'Bar Cutting Machines',
@@ -46,7 +46,7 @@ const products = [
     name: 'Batching Plants',
     description: 'Complete concrete batching systems for large-scale projects',
     icon: Factory,
-    image: '/products/construction-machinery-1.jpeg',
+    image: '/products/construction-machinery-3.jpeg',
   },
   {
     name: 'Spare Parts',
