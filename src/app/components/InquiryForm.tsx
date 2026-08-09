@@ -18,15 +18,35 @@ export default function InquiryForm() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, amount: 0.3 });
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
   const [formData, setFormData] = useState({ name: '', company: '', mobile: '', product: '', message: '' });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
-    setTimeout(() => {
-      setSubmitted(false);
+    setIsSubmitting(true);
+    setErrorMessage('');
+
+    try {
+      const response = await fetch('/api/inquiries', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok || !data?.success) {
+        throw new Error(data?.error || 'Unable to submit inquiry right now.');
+      }
+
+      setSubmitted(true);
       setFormData({ name: '', company: '', mobile: '', product: '', message: '' });
-    }, 3000);
+    } catch (error) {
+      setErrorMessage(error instanceof Error ? error.message : 'Unable to submit inquiry right now.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -117,6 +137,12 @@ export default function InquiryForm() {
                 </motion.div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-5">
+                  {errorMessage ? (
+                    <div className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+                      {errorMessage}
+                    </div>
+                  ) : null}
+
                   <div>
                     <Label htmlFor="name" className="text-gray-700 font-medium">Full Name *</Label>
                     <Input id="name" type="text" placeholder="Enter your name" required value={formData.name}
@@ -155,10 +181,10 @@ export default function InquiryForm() {
                       value={formData.message} onChange={(e) => setFormData({ ...formData, message: e.target.value })} className="mt-1" />
                   </div>
 
-                  <Button type="submit" size="lg"
-                    className="w-full bg-[#E86A17] hover:bg-[#d05c0f] text-white gap-2 group shadow-lg shadow-[#E86A17]/25">
+                  <Button type="submit" size="lg" disabled={isSubmitting}
+                    className="w-full bg-[#E86A17] hover:bg-[#d05c0f] text-white gap-2 group shadow-lg shadow-[#E86A17]/25 disabled:opacity-70">
                     <Send className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                    Submit Inquiry
+                    {isSubmitting ? 'Submitting...' : 'Submit Inquiry'}
                   </Button>
 
                   <p className="text-xs text-gray-400 text-center">
