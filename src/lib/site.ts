@@ -2,9 +2,9 @@ export const SITE_URL = 'https://www.ambishengineering.com';
 
 export const SITE = {
   name: 'Ambish Engineering',
-  title: 'Ambish Engineering – Construction Machinery Supplier | Ahmedabad, India Since 1976',
+  title: 'Ambish Engineering – Dealing in Construction Machinery | Ahmedabad, India Since 1976',
   description:
-    'Ambish Engineering supplies premium construction machinery — tower hoists, concrete mixers, batching plants, road rollers, bar cutting & bending machines across India. 48+ years of trust. Get a free quote today.',
+    'Ambish Engineering supplies construction machinery — tower hoists, concrete mixers, road rollers, bar cutting & bending machines across India. 48+ years of trust. Get a free quote today.',
   phone: '+919824183261',
   phoneDisplay: '+91 98241 83261',
   landline: '079 2634 5678',
@@ -40,12 +40,12 @@ export function getWhatsAppUrl(message?: string): string {
 }
 
 export const PRODUCT_CATALOG = [
-  'Concrete Mixers',
-  'Tower Hoists',
-  'Material Lifts',
-  'Road Rollers',
-  'Batching Plants',
-  'Bar Cutting Machines',
-  'Bar Bending Machines',
-  'Spare Parts',
+  'Hydraulic & Hopper Concrete Mixers',
+  'Material Lifts & Tower Hoists',
+  'Lift with Mixer Machines',
+  'Monkey Cranes',
+  'Concrete Buckets & Trolleys',
+  'Bar Cutting & Bending Machines',
+  'Baby Road Rollers & Compactors',
+  'Needle Vibrators & Site Equipment',
 ] as const;

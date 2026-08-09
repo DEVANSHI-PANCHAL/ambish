@@ -11,8 +11,15 @@ import { Label } from './ui/label';
 import { SITE, getWhatsAppUrl } from '../../lib/site';
 
 const productOptions = [
-  'Concrete Mixers', 'Material Lifts', 'Tower Hoists', 'Road Rollers',
-  'Bar Cutting Machines', 'Bar Bending Machines', 'Batching Plants', 'Spare Parts', 'Other',
+  'Hydraulic & Hopper Concrete Mixers',
+  'Material Lifts & Tower Hoists',
+  'Lift with Mixer Machines',
+  'Monkey Cranes',
+  'Concrete Buckets & Trolleys',
+  'Bar Cutting & Bending Machines',
+  'Baby Road Rollers & Compactors',
+  'Needle Vibrators & Site Equipment',
+  'Other',
 ];
 
 export default function InquiryForm() {

@@ -64,8 +64,8 @@ export default function Footer() {
                 'Material Lifts',
                 'Tower Hoists',
                 'Road Rollers',
-                'Batching Plants',
-                'Spare Parts',
+                'Bar Cutting Machines',
+                'Needle Vibrators',
               ].map((item) => (
                 <li key={item}>
                   <a href="#products" className="hover:text-[#E86A17] transition-colors">
