@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { Menu, X } from "lucide-react";
 import { Button } from "./ui/button";
 import AmbishLogo from "./AmbishLogo";
+import { SITE } from "../../lib/site";
 
 const navItems = [
   // { label: "Home", href: "#home" },
@@ -84,7 +85,7 @@ export default function Header() {
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={() => window.open("tel:+919876543210", "_self")}
+                onClick={() => window.open(`tel:${SITE.phone}`, "_self")}
                 className={`border text-sm font-medium transition-colors ${
                   isScrolled
                     ? "border-slate-300 text-slate-950 hover:bg-slate-100"
@@ -155,7 +156,7 @@ export default function Header() {
                   size="lg"
                   variant="outline"
                   className="border-white/30 text-white hover:bg-white/10"
-                  onClick={() => window.open("tel:+919876543210", "_self")}
+                  onClick={() => window.open(`tel:${SITE.phone}`, "_self")}
                 >
                   Call Us
                 </Button>

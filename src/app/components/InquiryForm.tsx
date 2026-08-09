@@ -2,12 +2,13 @@
 
 import { motion, useInView } from 'motion/react';
 import { useRef, useState } from 'react';
-import { Send, Check } from 'lucide-react';
+import { Send, Check, MessageCircle } from 'lucide-react';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Textarea } from './ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 import { Label } from './ui/label';
+import { SITE, getWhatsAppUrl } from '../../lib/site';
 
 const productOptions = [
   'Concrete Mixers', 'Material Lifts', 'Tower Hoists', 'Road Rollers',
@@ -21,6 +22,21 @@ export default function InquiryForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [formData, setFormData] = useState({ name: '', company: '', mobile: '', product: '', message: '' });
+
+  const handleWhatsAppSubmit = () => {
+    const text = [
+      `*New Inquiry - Ambish Engineering*`,
+      formData.name ? `*Name:* ${formData.name}` : '',
+      formData.company ? `*Company:* ${formData.company}` : '',
+      formData.mobile ? `*Mobile:* ${formData.mobile}` : '',
+      formData.product ? `*Product:* ${formData.product}` : '',
+      formData.message ? `*Message:* ${formData.message}` : '',
+    ]
+      .filter(Boolean)
+      .join('\n');
+
+    window.open(getWhatsAppUrl(text || 'Hello! I would like to inquire about your machinery.'), '_blank');
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -133,7 +149,16 @@ export default function InquiryForm() {
                     <Check className="w-10 h-10 text-[#E86A17]" />
                   </div>
                   <h3 className="text-2xl font-bold text-gray-900 mb-2">Thank You!</h3>
-                  <p className="text-gray-500">We have received your inquiry and will get back to you shortly.</p>
+                  <p className="text-gray-500 mb-6">We have received your inquiry and will get back to you shortly.</p>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={handleWhatsAppSubmit}
+                    className="border-green-600 text-green-700 hover:bg-green-50 gap-2 font-medium"
+                  >
+                    <MessageCircle className="w-4 h-4 text-green-600" />
+                    Connect immediately on WhatsApp
+                  </Button>
                 </motion.div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-5">
@@ -157,7 +182,7 @@ export default function InquiryForm() {
 
                   <div>
                     <Label htmlFor="mobile" className="text-gray-700 font-medium">Mobile Number *</Label>
-                    <Input id="mobile" type="tel" placeholder="+91 98765 43210" required value={formData.mobile}
+                    <Input id="mobile" type="tel" placeholder={SITE.phoneDisplay} required value={formData.mobile}
                       onChange={(e) => setFormData({ ...formData, mobile: e.target.value })} className="mt-1" />
                   </div>
 
@@ -181,11 +206,19 @@ export default function InquiryForm() {
                       value={formData.message} onChange={(e) => setFormData({ ...formData, message: e.target.value })} className="mt-1" />
                   </div>
 
-                  <Button type="submit" size="lg" disabled={isSubmitting}
-                    className="w-full bg-[#E86A17] hover:bg-[#d05c0f] text-white gap-2 group shadow-lg shadow-[#E86A17]/25 disabled:opacity-70">
-                    <Send className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                    {isSubmitting ? 'Submitting...' : 'Submit Inquiry'}
-                  </Button>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+                    <Button type="submit" size="lg" disabled={isSubmitting}
+                      className="w-full bg-[#E86A17] hover:bg-[#d05c0f] text-white gap-2 group shadow-lg shadow-[#E86A17]/25 disabled:opacity-70">
+                      <Send className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                      {isSubmitting ? 'Submitting...' : 'Submit Inquiry'}
+                    </Button>
+
+                    <Button type="button" size="lg" variant="outline" onClick={handleWhatsAppSubmit}
+                      className="w-full border-green-600 text-green-700 hover:bg-green-600 hover:text-white gap-2 transition-colors font-medium">
+                      <MessageCircle className="w-5 h-5 text-green-600 group-hover:text-white" />
+                      Chat on WhatsApp
+                    </Button>
+                  </div>
 
                   <p className="text-xs text-gray-400 text-center">
                     By submitting this form, you agree to our privacy policy

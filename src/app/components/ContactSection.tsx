@@ -4,6 +4,7 @@ import { motion, useInView } from 'motion/react';
 import { useRef } from 'react';
 import { MapPin, Phone, Mail, MessageCircle, Clock } from 'lucide-react';
 import { Button } from './ui/button';
+import { SITE, getWhatsAppUrl } from '../../lib/site';
 
 export default function ContactSection() {
   const ref = useRef(null);
@@ -69,17 +70,17 @@ export default function ContactSection() {
               </div>
               <h3 className="text-xl font-bold mb-3">Phone & WhatsApp</h3>
               <div className="space-y-2 text-white/90">
-                <a href="tel:+919876543210" className="block hover:text-white transition-colors font-medium">
-                  +91 98765 43210
+                <a href={`tel:${SITE.phone}`} className="block hover:text-white transition-colors font-medium">
+                  {SITE.phoneDisplay}
                 </a>
-                <a href="tel:+917926345678" className="block hover:text-white transition-colors">
-                  079 2634 5678
+                <a href={`tel:+91${SITE.landline.replace(/\s+/g, '')}`} className="block hover:text-white transition-colors">
+                  {SITE.landline}
                 </a>
                 <Button
                   variant="outline"
                   size="sm"
                   className="mt-4 border-white text-white hover:bg-white hover:text-[#E86A17] font-medium"
-                  onClick={() => window.open('https://wa.me/919876543210', '_blank')}
+                  onClick={() => window.open(getWhatsAppUrl('Hello! I want to contact Ambish Engineering regarding your machinery.'), '_blank')}
                 >
                   <MessageCircle className="w-4 h-4 mr-2" />
                   Chat on WhatsApp
@@ -103,9 +104,9 @@ export default function ContactSection() {
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-3">Email & Hours</h3>
               <div className="space-y-3 text-gray-600">
-                <a href="mailto:info@ambishengineering.com"
+                <a href={`mailto:${SITE.email}`}
                   className="block hover:text-[#E86A17] transition-colors font-medium text-sm">
-                  info@ambishengineering.com
+                  {SITE.email}
                 </a>
                 <div className="flex items-start gap-2 mt-4">
                   <Clock className="w-5 h-5 mt-0.5 text-[#E86A17] flex-shrink-0" />
@@ -154,7 +155,7 @@ export default function ContactSection() {
           <Button
             size="lg"
             className="bg-[#E86A17] hover:bg-[#d05c0f] text-white shadow-md"
-            onClick={() => window.open('tel:+919876543210', '_self')}
+            onClick={() => window.open(`tel:${SITE.phone}`, '_self')}
           >
             <Phone className="w-5 h-5 mr-2" />
             Call to Schedule Visit

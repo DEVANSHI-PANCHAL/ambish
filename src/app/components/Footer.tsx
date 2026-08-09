@@ -3,6 +3,7 @@
 import { motion } from 'motion/react';
 import { MapPin, Phone, Mail, MessageCircle, Facebook, Instagram, Linkedin, Twitter } from 'lucide-react';
 import AmbishLogo from './AmbishLogo';
+import { SITE, getWhatsAppUrl } from '../../lib/site';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -37,40 +38,41 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Products */}
+          {/* Quick Links */}
           <div>
-            <h3 className="text-sm font-bold mb-6 text-[#E86A17] uppercase tracking-wider">Our Products</h3>
+            <h3 className="text-sm font-bold mb-6 text-[#E86A17] uppercase tracking-wider">Quick Links</h3>
             <ul className="space-y-3 text-gray-600 text-sm">
-              {['Concrete Mixers', 'Material Lifts', 'Tower Hoists', 'Road Rollers', 'Batching Plants', 'Spare Parts'].map((item) => (
+              {['Home', 'About Us', 'Products', 'Why Choose Us', 'Clients', 'Contact'].map((item) => (
                 <li key={item}>
-                  <a href="#" className="hover:text-[#E86A17] transition-colors">{item}</a>
+                  <a
+                    href={`#${item.toLowerCase().replace(/\s+/g, '-')}`}
+                    className="hover:text-[#E86A17] transition-colors"
+                  >
+                    {item}
+                  </a>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* Quick Links */}
+          {/* Products */}
           <div>
-            <h3 className="text-sm font-bold mb-6 text-[#E86A17] uppercase tracking-wider">Quick Links</h3>
+            <h3 className="text-sm font-bold mb-6 text-[#E86A17] uppercase tracking-wider">Machinery</h3>
             <ul className="space-y-3 text-gray-600 text-sm">
-              <li>
-                <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-                  className="hover:text-[#E86A17] transition-colors">Home</button>
-              </li>
-              <li>
-                <button onClick={() => document.querySelector('#legacy')?.scrollIntoView({ behavior: 'smooth' })}
-                  className="hover:text-[#E86A17] transition-colors">Our Legacy</button>
-              </li>
-              <li>
-                <button onClick={() => document.querySelector('#products')?.scrollIntoView({ behavior: 'smooth' })}
-                  className="hover:text-[#E86A17] transition-colors">Products</button>
-              </li>
-              <li>
-                <button onClick={() => document.getElementById('inquiry-form')?.scrollIntoView({ behavior: 'smooth' })}
-                  className="hover:text-[#E86A17] transition-colors">Get Quote</button>
-              </li>
-              <li><a href="#" className="hover:text-[#E86A17] transition-colors">Privacy Policy</a></li>
-              <li><a href="#" className="hover:text-[#E86A17] transition-colors">Terms of Service</a></li>
+              {[
+                'Concrete Mixers',
+                'Material Lifts',
+                'Tower Hoists',
+                'Road Rollers',
+                'Batching Plants',
+                'Spare Parts',
+              ].map((item) => (
+                <li key={item}>
+                  <a href="#products" className="hover:text-[#E86A17] transition-colors">
+                    {item}
+                  </a>
+                </li>
+              ))}
             </ul>
           </div>
 
@@ -84,19 +86,19 @@ export default function Footer() {
               </li>
               <li className="flex items-center gap-3">
                 <Phone className="w-4 h-4 text-[#E86A17] flex-shrink-0" />
-                <a href="tel:+919876543210" className="hover:text-[#E86A17] transition-colors">+91 98765 43210</a>
+                <a href={`tel:${SITE.phone}`} className="hover:text-[#E86A17] transition-colors">{SITE.phoneDisplay}</a>
               </li>
               <li className="flex items-center gap-3">
                 <Mail className="w-4 h-4 text-[#E86A17] flex-shrink-0" />
-                <a href="mailto:info@ambishengineering.com" className="hover:text-[#E86A17] transition-colors text-xs">
-                  info@ambishengineering.com
+                <a href={`mailto:${SITE.email}`} className="hover:text-[#E86A17] transition-colors text-xs">
+                  {SITE.email}
                 </a>
               </li>
               <li>
                 <motion.button
                   whileHover={{ scale: 1.04 }}
                   whileTap={{ scale: 0.96 }}
-                  onClick={() => window.open('https://wa.me/919876543210', '_blank')}
+                  onClick={() => window.open(getWhatsAppUrl('Hello! I would like to chat with Ambish Engineering.'), '_blank')}
                   className="flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors text-sm font-medium"
                 >
                   <MessageCircle className="w-4 h-4" />

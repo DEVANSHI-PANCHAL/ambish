@@ -5,8 +5,8 @@ export const SITE = {
   title: 'Ambish Engineering – Construction Machinery Supplier | Ahmedabad, India Since 1976',
   description:
     'Ambish Engineering supplies premium construction machinery — tower hoists, concrete mixers, batching plants, road rollers, bar cutting & bending machines across India. 48+ years of trust. Get a free quote today.',
-  phone: '+919876543210',
-  phoneDisplay: '+91 98765 43210',
+  phone: '+919824183261',
+  phoneDisplay: '+91 98241 83261',
   landline: '079 2634 5678',
   email: 'info@ambishengineering.com',
   address: {
@@ -27,10 +27,17 @@ export const SITE = {
     linkedin: 'https://www.linkedin.com/company/ambishengineering',
     twitter: 'https://twitter.com/ambishengineering',
   },
-  whatsappUrl: 'https://wa.me/919876543210',
+  whatsappNumber: '919824183261',
+  whatsappUrl: 'https://wa.me/919824183261',
   foundingYear: '1976',
   ogImage: '/crane.webp',
 } as const;
+
+export function getWhatsAppUrl(message?: string): string {
+  const baseUrl = `https://wa.me/${SITE.whatsappNumber}`;
+  if (!message) return baseUrl;
+  return `${baseUrl}?text=${encodeURIComponent(message)}`;
+}
 
 export const PRODUCT_CATALOG = [
   'Concrete Mixers',

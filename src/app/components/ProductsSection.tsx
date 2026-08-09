@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { motion, useInView } from 'motion/react';
 import { useRef } from 'react';
 import { Combine, MoveVertical, Radio, Cylinder, Scissors, RotateCw, Factory, Wrench } from 'lucide-react';
+import { getWhatsAppUrl } from '../../lib/site';
 
 const products = [
   {
@@ -102,6 +103,7 @@ export default function ProductsSection() {
                 <motion.div
                   whileHover={{ y: -8, scale: 1.02 }}
                   transition={{ duration: 0.25 }}
+                  onClick={() => window.open(getWhatsAppUrl(`Hello! I am interested in inquiring about ${product.name}.`), '_blank')}
                   className="group bg-white rounded-2xl p-7 border border-gray-200 hover:border-[#E86A17] hover:shadow-xl transition-all duration-300 h-full cursor-pointer relative overflow-hidden"
                 >
                   {/* Orange corner accent on hover */}
