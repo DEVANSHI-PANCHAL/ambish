@@ -8,10 +8,14 @@ import InquiryForm from './components/InquiryForm';
 import ContactSection from './components/ContactSection';
 import Footer from './components/Footer';
 import FloatingWhatsApp from './components/FloatingWhatsApp';
+import ConstructionSiteLoader from './components/ConstructionSiteLoader';
 
 export default function App() {
   return (
     <div className="min-h-screen">
+      {/* Construction Site Lottie Loader */}
+      <ConstructionSiteLoader />
+
       <Header />
       
       <main>

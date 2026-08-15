@@ -1,117 +1,208 @@
 "use client";
 
+import Image from 'next/image';
 import { motion, useInView } from 'motion/react';
-import { useRef } from 'react';
-import { Calendar, Award, Users, TrendingUp } from 'lucide-react';
+import { useRef, useState } from 'react';
+import {
+  History,
+  ChevronLeft,
+  ChevronRight,
+  Sparkles,
+} from 'lucide-react';
 
-const milestones = [
-  { year: '1976', title: 'Foundation', description: 'Ambish Engineering established in Ahmedabad by our visionary founder', icon: Calendar },
-  { year: '1985', title: 'Growth', description: 'Expanded product line to include tower hoists and material lifts', icon: TrendingUp },
-  { year: '1995', title: 'Recognition', description: 'Became trusted supplier for major contractors across Gujarat', icon: Award },
-  { year: '2010', title: 'Expansion', description: 'Pan-India distribution network established with 100+ dealer partners', icon: Users },
-  { year: '2026', title: 'Today', description: '50 years of excellence, still family-run with the same values', icon: Award },
+interface Milestone {
+  year: string;
+  title: string;
+  tag: string;
+  description: string;
+}
+
+const MILESTONES: Milestone[] = [
+  {
+    year: '1976',
+    tag: 'Foundation',
+    title: 'Ahmedabad Workshop',
+    description: 'Founded with a mission to engineer rugged, honest machinery for Gujarat contractors.',
+  },
+  {
+    year: '1985',
+    tag: 'Innovation',
+    title: 'High-Rise Hoists',
+    description: 'Pioneered robust material lifts and tower hoists for high-rise vertical transit.',
+  },
+  {
+    year: '1995',
+    tag: 'Expansion',
+    title: 'Statewide Trust',
+    description: 'Became preferred manufacturing supplier for premier developers across Gujarat.',
+  },
+  {
+    year: '2010',
+    tag: 'Scale',
+    title: 'Pan-India Reach',
+    description: 'Supplying heavy construction machinery to nationwide infrastructure sites.',
+  },
+  {
+    year: '2026',
+    tag: 'Heritage',
+    title: '50 Years of Excellence',
+    description: '3 generations of family-run commitment to rugged reliability and client trust.',
+  },
+];
+
+const HERITAGE_PHOTOS: string[] = [
+  '/heritage/heritage-1.png?v=4',
+  '/heritage/heritage-2.png?v=4',
+  '/heritage/heritage-3.png?v=4',
+  '/heritage/heritage-4.png?v=4',
+  '/heritage/heritage-6.png?v=4',
+  '/heritage/heritage-7.png?v=4',
+  '/heritage/heritage-8.png?v=4',
+  '/heritage/heritage-10.jpeg?v=4',
+  '/heritage/heritage-12.jpeg?v=4',
+  '/heritage/heritage-13.jpeg?v=4',
+  '/heritage/heritage-14.jpeg?v=4',
+  '/heritage/heritage-15.jpeg?v=4',
+  '/heritage/heritage-16.jpeg?v=4',
+  '/heritage/heritage-17.jpeg?v=4',
+  '/heritage/heritage-18.jpeg?v=4',
+  '/heritage/heritage-19.jpeg?v=4',
 ];
 
 export default function LegacySection() {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, amount: 0.2 });
+  const isInView = useInView(ref, { once: true, amount: 0.1 });
+  const [isPaused, setIsPaused] = useState(false);
+
+  // Repeat for continuous seamless infinite loop
+  const marqueePhotos = [...HERITAGE_PHOTOS, ...HERITAGE_PHOTOS];
 
   return (
-    <section ref={ref} className="py-24 bg-white relative overflow-hidden">
-      {/* Subtle warm background tint */}
-      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#E86A17]/4 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-96 h-96 bg-[#E86A17]/3 rounded-full blur-3xl pointer-events-none" />
-
-      <div className="container mx-auto px-4 relative z-10">
+    <section ref={ref} id="legacy" className="py-14 md:py-18 bg-[#FAF9F6] relative overflow-hidden border-t border-slate-200/60">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        {/* Section Header - Editorial Typography */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 15 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
+          transition={{ duration: 0.5 }}
+          className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10 pb-6 border-b border-slate-200"
         >
-          <span className="inline-block px-4 py-2 bg-[#E86A17]/10 text-[#E86A17] rounded-full text-sm uppercase tracking-wider font-medium mb-4">
-            Our Legacy
-          </span>
-          <h2 className="font-serif text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-            Nearly <span className="text-[#E86A17]">50 Years</span> of Excellence
-          </h2>
-          <p className="text-xl text-gray-500 max-w-2xl mx-auto">
-            From humble beginnings in 1976 to becoming a trusted name in construction machinery across India
+          <div>
+            <div className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-[#E86A17] mb-2">
+              <History className="w-3.5 h-3.5" />
+              <span>Engineering Heritage</span>
+            </div>
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
+              5 Decades of <span className="text-[#E86A17]"> Trust</span>
+            </h2>
+          </div>
+          <p className="text-slate-600 text-sm sm:text-base max-w-md">
+            Established in 1976 in Ahmedabad, building enduring partnerships across three generations of heavy machinery craft.
           </p>
         </motion.div>
 
-        <div className="relative max-w-5xl mx-auto">
-          {/* Timeline line */}
-          <div className="absolute left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-[#E86A17] via-[#FDB813] to-[#E86A17] hidden lg:block" />
-
-          <div className="space-y-8 lg:space-y-12">
-            {milestones.map((milestone, index) => {
-              const Icon = milestone.icon;
-              const isEven = index % 2 === 0;
-
-              return (
-                <motion.div
-                  key={milestone.year}
-                  initial={{ opacity: 0, x: isEven ? -40 : 40 }}
-                  animate={isInView ? { opacity: 1, x: 0 } : {}}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
-                  className="relative"
-                >
-                  <div className={`lg:grid lg:grid-cols-2 gap-6 lg:gap-12 items-center ${isEven ? '' : 'lg:grid-flow-dense'}`}>
-                    <div className={`${isEven ? 'lg:col-start-1 lg:text-right' : 'lg:col-start-2'}`}>
-                      <motion.div
-                        whileHover={{ scale: 1.02 }}
-                        className={`bg-white rounded-2xl p-6 shadow-md hover:shadow-xl transition-all border border-gray-100 hover:border-[#E86A17]/30 max-w-md w-full mx-auto ${
-                          isEven ? 'lg:ml-auto lg:mr-0' : 'lg:mr-auto lg:ml-0'
-                        }`}
-                      >
-                        <div className={`flex items-center gap-3.5 mb-3 ${isEven ? 'lg:justify-end' : ''}`}>
-                          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#E86A17] to-[#FF8C38] flex items-center justify-center shadow-md flex-shrink-0">
-                            <Icon className="w-5 h-5 text-white" />
-                          </div>
-                          <div className="text-3xl font-bold text-[#E86A17]">{milestone.year}</div>
-                        </div>
-                        <h3 className="text-xl font-bold text-gray-900 mb-1.5">{milestone.title}</h3>
-                        <p className="text-gray-500 text-sm leading-relaxed">{milestone.description}</p>
-                      </motion.div>
-                    </div>
-
-                    {/* Timeline dot */}
-                    <div className="hidden lg:block absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
-                      <motion.div
-                        initial={{ scale: 0 }}
-                        animate={isInView ? { scale: 1 } : {}}
-                        transition={{ duration: 0.4, delay: index * 0.1 + 0.3 }}
-                        className="w-5 h-5 rounded-full bg-white border-4 border-[#E86A17] shadow-lg"
-                      />
-                    </div>
-                  </div>
-                </motion.div>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Stats banner — light with orange accent */}
+        {/* Architectural Connected Timeline Ribbon (No Clunky Card Boxes) */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 15 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, delay: 0.8 }}
-          className="mt-16 max-w-4xl mx-auto bg-[#F7F4F0] rounded-2xl p-8 md:p-10 text-gray-900 relative overflow-hidden border border-gray-200"
+          transition={{ duration: 0.5, delay: 0.15 }}
+          className="mb-12 relative"
         >
-          {/* Subtle orange glow */}
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-24 bg-[#E86A17]/20 blur-3xl rounded-full" />
-          <div className="relative z-10 grid md:grid-cols-3 gap-6 text-center">
-            {[
-              { value: '1976', label: 'Year Established' },
-              { value: '3', label: 'Generations of Trust' },
-              { value: '48+', label: 'Years of Excellence' },
-            ].map((stat) => (
-              <div key={stat.label}>
-                <div className="text-4xl font-bold mb-1 text-[#E86A17]">{stat.value}</div>
-                <div className="text-gray-600 text-sm">{stat.label}</div>
+          {/* Continuous Connecting Track */}
+          <div className="hidden lg:block absolute top-[14px] left-0 right-0 h-[2px] bg-slate-200 z-0" />
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 lg:gap-4 relative z-10">
+            {MILESTONES.map((m, idx) => (
+              <div key={m.year} className="relative pt-6 lg:pt-8 group">
+                {/* Milestone Node on Track */}
+                <div className="hidden lg:flex absolute top-0 left-0 w-7 h-7 rounded-full bg-white border-2 border-slate-300 group-hover:border-[#E86A17] items-center justify-center transition-colors shadow-sm">
+                  <div className="w-2 h-2 rounded-full bg-slate-400 group-hover:bg-[#E86A17] transition-colors" />
+                </div>
+
+                <div className="flex items-baseline gap-2 mb-1">
+                  <span className="text-2xl sm:text-3xl font-black text-slate-900 group-hover:text-[#E86A17] transition-colors">
+                    {m.year}
+                  </span>
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-[#E86A17]">
+                    {m.tag}
+                  </span>
+                </div>
+                <h3 className="text-sm font-bold text-slate-900 mb-1">
+                  {m.title}
+                </h3>
+                <p className="text-slate-600 text-xs leading-relaxed">
+                  {m.description}
+                </p>
               </div>
             ))}
+          </div>
+        </motion.div>
+
+        {/* Full-Bleed Archival Photo Strip (Very Very Very Slow Infinite Auto-Scroll) */}
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.5, delay: 0.25 }}
+          className="bg-slate-950 text-white rounded-2xl p-5 sm:p-6 relative overflow-hidden shadow-xl border border-slate-800"
+          onMouseEnter={() => setIsPaused(true)}
+          onMouseLeave={() => setIsPaused(false)}
+        >
+          {/* Header & Controls */}
+          <div className="flex items-center justify-between gap-4 mb-4 pb-3 border-b border-slate-800/80">
+            <div className="flex items-center gap-2">
+              <Sparkles className="w-4 h-4 text-[#E86A17]" />
+              <span className="text-xs uppercase tracking-widest font-bold text-slate-300">
+                Archival Frames: The Ambish Journey Since 1976
+              </span>
+            </div>
+
+            <div className="text-[11px] font-mono text-slate-400">
+              Hover to pause inspection
+            </div>
+          </div>
+
+          {/* Infinite Smooth Slow-Motion Carousel */}
+          <div className="relative w-full overflow-hidden select-none py-1">
+            {/* Edge Shadow Masks */}
+            <div className="absolute left-0 top-0 bottom-0 w-8 sm:w-16 bg-gradient-to-r from-slate-950 to-transparent z-10 pointer-events-none" />
+            <div className="absolute right-0 top-0 bottom-0 w-8 sm:w-16 bg-gradient-to-l from-slate-950 to-transparent z-10 pointer-events-none" />
+
+            <motion.div
+              className="flex gap-4 sm:gap-5 w-max"
+              animate={{
+                x: isPaused ? undefined : ['0%', '-50%'],
+              }}
+              transition={{
+                repeat: Infinity,
+                ease: 'linear',
+                duration: 200, // Ultra slow 160-second loop
+              }}
+            >
+              {marqueePhotos.map((src, idx) => (
+                <div
+                  key={idx}
+                  className="w-60 sm:w-72 flex-shrink-0 bg-white p-2.5 sm:p-3 rounded-2xl shadow-xl shadow-black/40 border border-slate-200/50 group flex flex-col justify-between transition-transform duration-200 hover:-translate-y-1 cursor-pointer"
+                >
+                  {/* Cropped Inset Image Area */}
+                  <div className="relative aspect-[4/3] w-full rounded-xl overflow-hidden bg-slate-100 shadow-inner">
+                    <Image
+                      src={src}
+                      alt={`Ambish Heritage Archive Photo ${idx + 1}`}
+                      fill
+                      sizes="300px"
+                      className="object-cover scale-[1.08] group-hover:scale-[1.14] transition-transform duration-300 select-none"
+                      priority={idx < 4}
+                    />
+                  </div>
+
+                  {/* Subtle Archival Exhibition Stamp */}
+                  <div className="flex items-center justify-between pt-2 px-1 text-[9px] font-mono uppercase tracking-widest text-slate-400 font-semibold select-none">
+                    <span>Archive #{String((idx % HERITAGE_PHOTOS.length) + 1).padStart(2, '0')}</span>
+                    <span className="text-[#E86A17] font-bold">EST. 1976</span>
+                  </div>
+                </div>
+              ))}
+            </motion.div>
           </div>
         </motion.div>
       </div>
