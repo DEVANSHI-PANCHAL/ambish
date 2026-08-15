@@ -1,113 +1,181 @@
 "use client";
 
+import Image from 'next/image';
 import { motion, useInView } from 'motion/react';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
+import { Building2, Award, ShieldCheck, Truck, ExternalLink } from 'lucide-react';
 
-const clients = [
-  { name: 'L&T Construction', abbr: 'L&T' },
-  { name: 'Shapoorji Pallonji', abbr: 'SP' },
-  { name: 'Tata Projects', abbr: 'TP' },
-  { name: 'GMR Group', abbr: 'GMR' },
-  { name: 'Larsen & Toubro', abbr: 'LT' },
-  { name: 'DLF Limited', abbr: 'DLF' },
-  { name: 'Adani Realty', abbr: 'AR' },
-  { name: 'Sobha Limited', abbr: 'SL' },
+interface Client {
+  id: string;
+  name: string;
+  logo: string;
+  alt: string;
+  website: string;
+}
+
+const CLIENTS: Client[] = [
+  {
+    id: 'gala',
+    name: 'Gala Group',
+    logo: '/clients/gala.png',
+    alt: 'Gala Group Official Logo',
+    website: 'https://galainfra.com/',
+  },
+  {
+    id: 'pc-snehal',
+    name: 'P.C. Snehal Group',
+    logo: '/clients/pcsnehal.png',
+    alt: 'P.C. Snehal Group Official Logo',
+    website: 'https://pcsnehal.in/',
+  },
+  {
+    id: 'psp-projects',
+    name: 'PSP Projects',
+    logo: '/clients/psp-projects.png',
+    alt: 'PSP Projects Official Logo',
+    website: 'https://www.pspprojects.com/',
+  },
+  {
+    id: 'b-safal',
+    name: 'B Safal',
+    logo: '/clients/b-safal.png',
+    alt: 'B Safal Official Logo',
+    website: 'https://bsafal.com/',
+  },
+  {
+    id: 'hn-safal',
+    name: 'HN Safal',
+    logo: '/clients/hn-safal.webp',
+    alt: 'HN Safal Official Logo',
+    website: 'https://www.hnsafal.com/',
+  },
+  {
+    id: 'bakeri',
+    name: 'Bakeri Group',
+    logo: '/clients/bakeri.png',
+    alt: 'Bakeri Group Official Logo',
+    website: 'https://www.bakeri.com/',
+  },
 ];
 
 export default function ClientsSection() {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, amount: 0.3 });
+  const isInView = useInView(ref, { once: true, amount: 0.1 });
+  const [isPaused, setIsPaused] = useState(false);
+
+  // Repeat items for seamless continuous infinite marquee
+  const marqueeItems = [...CLIENTS, ...CLIENTS, ...CLIENTS, ...CLIENTS];
 
   return (
-    <section ref={ref} className="py-24 bg-[#F7F4F0] relative overflow-hidden">
-      <div className="container mx-auto px-4">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
-        >
-          <span className="inline-block px-4 py-2 bg-[#E86A17]/10 text-[#E86A17] rounded-full text-sm uppercase tracking-wider font-medium mb-4">
-            Our Clients
-          </span>
-          <h2 className="font-serif text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-            Trusted by <span className="text-[#E86A17]">Industry Leaders</span>
-          </h2>
-          <p className="text-xl text-gray-500 max-w-2xl mx-auto">
-            Proud to serve major construction companies and contractors across India
-          </p>
-        </motion.div>
+    <section ref={ref} id="clients" className="py-20 md:py-24 bg-[#F8FAFC] relative overflow-hidden">
+      {/* Ambient background glow */}
+      <div className="absolute top-0 right-1/4 w-96 h-96 bg-[#E86A17]/5 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-orange-100/30 rounded-full blur-3xl pointer-events-none" />
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-          {clients.map((client, index) => (
-            <motion.div
-              key={client.name}
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={isInView ? { opacity: 1, scale: 1 } : {}}
-              transition={{ duration: 0.4, delay: index * 0.08 }}
-            >
-              <motion.div
-                whileHover={{ scale: 1.05, y: -4 }}
-                className="bg-white rounded-xl p-7 shadow-sm hover:shadow-lg transition-all border border-gray-200 hover:border-[#E86A17]/40 flex items-center justify-center h-28 cursor-pointer"
-              >
-                <div className="text-center">
-                  <div className="text-2xl font-extrabold text-gray-800 mb-1">{client.abbr}</div>
-                  <div className="text-xs text-gray-400">{client.name}</div>
-                </div>
-              </motion.div>
-            </motion.div>
-          ))}
-        </div>
-
-        {/* Testimonial */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, delay: 0.8 }}
-          className="mt-16 max-w-4xl mx-auto"
-        >
-          <div className="bg-white rounded-2xl p-8 md:p-12 border border-gray-200 shadow-md relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-[#E86A17]/5 rounded-full blur-2xl" />
-            <div className="flex items-start gap-4 mb-6">
-              <div className="text-6xl text-[#E86A17] leading-none font-serif">"</div>
-              <div>
-                <p className="text-xl text-gray-700 leading-relaxed mb-6">
-                  Ambish Engineering has been our go-to partner for construction machinery for over
-                  15 years. Their commitment to quality, honest advice, and reliable after-sales
-                  support makes them stand out in the industry.
-                </p>
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#E86A17] to-[#FF8C38] flex items-center justify-center text-white font-bold shadow-md">
-                    RP
-                  </div>
-                  <div>
-                    <div className="font-semibold text-gray-900">Rajesh Patel</div>
-                    <div className="text-sm text-gray-400">Project Director, Major Construction Firm</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </motion.div>
-
-        {/* Trust indicators */}
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, delay: 1 }}
-          className="mt-16 grid md:grid-cols-4 gap-8 text-center"
+          transition={{ duration: 0.6 }}
+          className="text-center max-w-3xl mx-auto mb-10 md:mb-12"
+        >
+          <span className="inline-flex items-center gap-1.5 px-4 py-1.5 bg-[#E86A17]/10 text-[#E86A17] rounded-full text-xs md:text-sm font-semibold uppercase tracking-wider mb-4 border border-[#E86A17]/20 shadow-sm">
+            <Building2 className="w-4 h-4" />
+            Trusted Industry Leaders
+          </span>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight mb-4">
+            Trusted by <span className="text-[#E86A17]">Premier Developers</span> & Contractors
+          </h2>
+          <p className="text-slate-600 text-base sm:text-lg">
+            Proudly supplying heavy construction machinery, hoists, and concrete batch equipment to Gujarat and India&apos;s leading infrastructure builders.
+          </p>
+        </motion.div>
+      </div>
+
+      {/* Infinite Seamless Logo Carousel (Full Space Utilization, No Dead White Space) */}
+      <div
+        className="relative w-full overflow-hidden mb-16 py-2 select-none"
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}
+      >
+        {/* Edge Gradient Masks for Seamless Infinity Loop */}
+        <div className="absolute left-0 top-0 bottom-0 w-16 sm:w-32 bg-gradient-to-r from-[#F8FAFC] to-transparent z-10 pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-0 w-16 sm:w-32 bg-gradient-to-l from-[#F8FAFC] to-transparent z-10 pointer-events-none" />
+
+        <motion.div
+          className="flex gap-5 sm:gap-6 w-max"
+          animate={{
+            x: isPaused ? undefined : ['0%', '-50%'],
+          }}
+          transition={{
+            repeat: Infinity,
+            ease: 'linear',
+            duration: 50,
+          }}
+        >
+          {marqueeItems.map((client, idx) => (
+            <a
+              key={`${client.id}-${idx}`}
+              href={client.website}
+              target="_blank"
+              rel="noopener noreferrer"
+              title={`Visit ${client.name} Official Website`}
+              className="w-52 sm:w-64 h-28 sm:h-32 bg-white rounded-3xl p-5 sm:p-6 border border-slate-200/90 shadow-sm hover:shadow-lg hover:border-[#E86A17]/50 transition-all duration-300 flex items-center justify-center flex-shrink-0 group cursor-pointer relative overflow-hidden"
+            >
+              {/* Authentic Client Logo Only */}
+              <div className="relative w-full h-full flex items-center justify-center">
+                <Image
+                  src={client.logo}
+                  alt={client.alt}
+                  fill
+                  sizes="260px"
+                  className="object-contain p-2 select-none group-hover:scale-105 transition-transform duration-200"
+                  priority={idx < 6}
+                />
+              </div>
+
+              {/* Subtle hover icon */}
+              <div className="absolute top-2.5 right-2.5 opacity-0 group-hover:opacity-100 transition-opacity duration-200 text-[#E86A17]">
+                <ExternalLink className="w-3.5 h-3.5" />
+              </div>
+            </a>
+          ))}
+        </motion.div>
+      </div>
+
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        {/* Trust Highlight Stats */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6, delay: 0.3 }}
+          className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 max-w-5xl mx-auto"
         >
           {[
-            { value: '500+', label: 'Happy Clients' },
-            { value: '1000+', label: 'Projects Completed' },
-            { value: '98%', label: 'Client Satisfaction' },
-            { value: '24/7', label: 'Support Available' },
-          ].map((stat) => (
-            <div key={stat.label}>
-              <div className="text-4xl font-bold text-[#E86A17] mb-2">{stat.value}</div>
-              <div className="text-gray-500">{stat.label}</div>
-            </div>
-          ))}
+            { icon: Award, value: '48+ Years', label: 'Manufacturing & Supply Trust' },
+            { icon: Building2, value: '1000+', label: 'Major Sites & Projects Equipped' },
+            { icon: ShieldCheck, value: '100%', label: 'Tested Safety & Rugged Quality' },
+            { icon: Truck, value: 'Pan-India', label: 'Machinery Delivery & Spares' },
+          ].map((stat, idx) => {
+            const Icon = stat.icon;
+            return (
+              <div
+                key={idx}
+                className="bg-white rounded-2xl p-5 border border-slate-200/80 shadow-sm text-center flex flex-col items-center justify-center"
+              >
+                <div className="w-10 h-10 rounded-xl bg-orange-50 text-[#E86A17] flex items-center justify-center mb-2.5">
+                  <Icon className="w-5 h-5" />
+                </div>
+                <div className="text-xl sm:text-2xl font-extrabold text-slate-900 mb-0.5">
+                  {stat.value}
+                </div>
+                <div className="text-xs text-slate-500 font-medium">
+                  {stat.label}
+                </div>
+              </div>
+            );
+          })}
         </motion.div>
       </div>
     </section>
