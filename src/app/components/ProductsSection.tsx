@@ -8,16 +8,12 @@ import {
   X,
   MessageCircle,
   Phone,
-  Maximize2,
-  ChevronLeft,
-  ChevronRight,
   Layers,
   Combine,
   MoveVertical,
   Scissors,
   Cylinder,
   Activity,
-  ArrowUpRight,
 } from 'lucide-react';
 import { getWhatsAppUrl, SITE } from '../../lib/site';
 
@@ -230,7 +226,6 @@ export default function ProductsSection() {
   const isInView = useInView(ref, { once: true, amount: 0.05 });
   const [activeCategory, setActiveCategory] = useState<CategoryKey>('all');
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedProduct, setSelectedProduct] = useState<ProductItem | null>(null);
 
   // Category counts
   const categoryCounts = useMemo(() => {
@@ -258,27 +253,6 @@ export default function ProductsSection() {
       return matchesCategory && matchesSearch;
     });
   }, [activeCategory, searchQuery]);
-
-  // Modal navigation
-  const currentIndex = selectedProduct
-    ? filteredProducts.findIndex((p) => p.id === selectedProduct.id)
-    : -1;
-
-  const handleNextProduct = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    if (currentIndex >= 0 && filteredProducts.length > 0) {
-      const nextIdx = (currentIndex + 1) % filteredProducts.length;
-      setSelectedProduct(filteredProducts[nextIdx]);
-    }
-  };
-
-  const handlePrevProduct = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    if (currentIndex >= 0 && filteredProducts.length > 0) {
-      const prevIdx = (currentIndex - 1 + filteredProducts.length) % filteredProducts.length;
-      setSelectedProduct(filteredProducts[prevIdx]);
-    }
-  };
 
   return (
     <section ref={ref} id="products" className="py-20 md:py-28 bg-[#F8FAFC] relative overflow-hidden">
@@ -349,7 +323,7 @@ export default function ProductsSection() {
                   onClick={() => setActiveCategory(cat.key)}
                   className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-200 shadow-sm ${
                     isActive
-                      ? 'bg-[#E86A17] text-white shadow-md shadow-[#E86A17]/25 scale-[1.02]'
+                      ? 'bg-[#E86A17] text-white shadow-md shadow-[#E86A17]/25'
                       : 'bg-white text-slate-600 hover:bg-slate-50 hover:text-slate-900 border border-slate-200/80 hover:border-slate-300'
                   }`}
                 >
@@ -402,33 +376,24 @@ export default function ProductsSection() {
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.95 }}
                   transition={{ duration: 0.25 }}
-                  onClick={() => setSelectedProduct(product)}
-                  className="group bg-white rounded-2xl p-4 border border-slate-200/90 shadow-sm hover:shadow-xl hover:border-[#E86A17]/40 transition-all duration-300 flex flex-col justify-between cursor-pointer relative overflow-hidden"
+                  className="bg-white rounded-2xl p-4 border border-slate-200/90 shadow-sm flex flex-col justify-between"
                 >
                   {/* Card Image Area */}
-                  <div className="relative aspect-square w-full rounded-xl overflow-hidden bg-[#FAFAFA] flex items-center justify-center p-3 mb-4 group-hover:bg-orange-50/30 transition-colors">
+                  <div className="relative aspect-square w-full rounded-xl overflow-hidden bg-[#FAFAFA] flex items-center justify-center p-3 mb-4">
                     <Image
                       src={product.image}
                       alt={product.name}
                       fill
                       sizes="(min-width: 1280px) 25vw, (min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-                      className="object-contain p-2 group-hover:scale-105 transition-transform duration-300 ease-out"
+                      className="object-contain p-2"
                     />
-
-                    {/* Quick Preview Badge Overlay */}
-                    <div className="absolute top-2.5 right-2.5 opacity-0 group-hover:opacity-100 transition-opacity duration-200 bg-slate-900/80 hover:bg-[#E86A17] text-white p-2 rounded-xl backdrop-blur-sm shadow-md">
-                      <Maximize2 className="w-3.5 h-3.5" />
-                    </div>
                   </div>
 
                   {/* Product Name Only */}
-                  <div className="pt-1 flex items-start justify-between gap-2">
-                    <h3 className="font-bold text-slate-800 text-sm sm:text-base leading-snug group-hover:text-[#E86A17] transition-colors">
+                  <div className="pt-1">
+                    <h3 className="font-bold text-slate-800 text-sm sm:text-base leading-snug text-center">
                       {product.name}
                     </h3>
-                    <div className="text-slate-300 group-hover:text-[#E86A17] transition-colors flex-shrink-0 pt-0.5">
-                      <ArrowUpRight className="w-4 h-4" />
-                    </div>
                   </div>
                 </motion.div>
               ))}
@@ -480,102 +445,6 @@ export default function ProductsSection() {
           </div>
         </motion.div>
       </div>
-
-      {/* Lightbox / Preview Modal */}
-      <AnimatePresence>
-        {selectedProduct && (
-          <div
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/80 backdrop-blur-md"
-            onClick={() => setSelectedProduct(null)}
-          >
-            <motion.div
-              initial={{ opacity: 0, scale: 0.92, y: 15 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.92, y: 15 }}
-              transition={{ duration: 0.2 }}
-              onClick={(e) => e.stopPropagation()}
-              className="relative w-full max-w-2xl bg-white rounded-3xl shadow-2xl overflow-hidden border border-slate-200"
-            >
-              {/* Close Button */}
-              <button
-                onClick={() => setSelectedProduct(null)}
-                className="absolute top-4 right-4 z-20 bg-slate-900/70 hover:bg-slate-900 text-white p-2.5 rounded-full transition-colors backdrop-blur-sm shadow-md"
-                title="Close"
-              >
-                <X className="w-5 h-5" />
-              </button>
-
-              {/* Modal Product Image */}
-              <div className="relative w-full aspect-square max-h-[60vh] bg-[#FAFAFA] flex items-center justify-center p-6 sm:p-10 border-b border-slate-100">
-                <Image
-                  src={selectedProduct.image}
-                  alt={selectedProduct.name}
-                  fill
-                  sizes="(min-width: 768px) 600px, 90vw"
-                  className="object-contain p-4"
-                  priority
-                />
-
-                {/* Left / Right Nav Arrows */}
-                {filteredProducts.length > 1 && (
-                  <>
-                    <button
-                      onClick={handlePrevProduct}
-                      className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-[#E86A17] text-slate-700 hover:text-white p-2.5 rounded-full backdrop-blur-md transition-colors shadow-lg z-10"
-                      title="Previous Product"
-                    >
-                      <ChevronLeft className="w-5 h-5" />
-                    </button>
-                    <button
-                      onClick={handleNextProduct}
-                      className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-[#E86A17] text-slate-700 hover:text-white p-2.5 rounded-full backdrop-blur-md transition-colors shadow-lg z-10"
-                      title="Next Product"
-                    >
-                      <ChevronRight className="w-5 h-5" />
-                    </button>
-                  </>
-                )}
-              </div>
-
-              {/* Modal Product Name & Actions */}
-              <div className="p-6 sm:p-8 bg-white flex flex-col sm:flex-row items-center justify-between gap-4">
-                <div className="text-center sm:text-left">
-                  <span className="text-xs uppercase font-bold tracking-wider text-[#E86A17] mb-1 block">
-                    {CATEGORIES.find((c) => c.key === selectedProduct.category)?.label || 'Machinery'}
-                  </span>
-                  <h3 className="text-xl sm:text-2xl font-extrabold text-slate-900">
-                    {selectedProduct.name}
-                  </h3>
-                </div>
-
-                <div className="flex items-center gap-2.5 w-full sm:w-auto flex-shrink-0">
-                  <button
-                    onClick={() =>
-                      window.open(
-                        getWhatsAppUrl(
-                          `Hello Gaurang, I am interested in inquiring about ${selectedProduct.name}. Please share pricing, availability, and specifications.`
-                        ),
-                        '_blank'
-                      )
-                    }
-                    className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 px-5 py-3 bg-green-600 hover:bg-green-500 text-white rounded-xl text-sm font-bold transition-colors shadow-md"
-                  >
-                    <MessageCircle className="w-4 h-4" />
-                    Inquire on WhatsApp
-                  </button>
-                  <button
-                    onClick={() => window.open(`tel:${SITE.phone}`, '_self')}
-                    className="inline-flex items-center justify-center p-3 bg-slate-900 hover:bg-slate-800 text-white rounded-xl transition-colors shadow-md"
-                    title="Call Sales"
-                  >
-                    <Phone className="w-4 h-4" />
-                  </button>
-                </div>
-              </div>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
     </section>
   );
 }

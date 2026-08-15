@@ -7,8 +7,7 @@ export const SITE = {
     'Ambish Engineering supplies construction machinery — tower hoists, concrete mixers, road rollers, bar cutting & bending machines across India. 48+ years of trust. Get a free quote today.',
   phone: '+919824183261',
   phoneDisplay: '+91 98241 83261',
-  landline: '079 2634 5678',
-  email: 'info@ambishengineering.com',
+  email: 'ambishengineering@outlook.com',
   address: {
     street: 'Industrial Area, Odhav',
     city: 'Ahmedabad',
@@ -37,6 +36,14 @@ export function getWhatsAppUrl(message?: string): string {
   const baseUrl = `https://wa.me/${SITE.whatsappNumber}`;
   if (!message) return baseUrl;
   return `${baseUrl}?text=${encodeURIComponent(message)}`;
+}
+
+export function getEmailUrl(subject?: string, body?: string): string {
+  const params: string[] = [];
+  if (subject) params.push(`subject=${encodeURIComponent(subject)}`);
+  if (body) params.push(`body=${encodeURIComponent(body)}`);
+  const query = params.length > 0 ? `?${params.join('&')}` : '';
+  return `mailto:${SITE.email}${query}`;
 }
 
 export const PRODUCT_CATALOG = [

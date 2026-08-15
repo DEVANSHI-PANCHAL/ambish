@@ -2,13 +2,13 @@
 
 import { motion, useInView } from 'motion/react';
 import { useRef, useState } from 'react';
-import { Send, Check, MessageCircle } from 'lucide-react';
+import { Send, Check, MessageCircle, Mail } from 'lucide-react';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Textarea } from './ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 import { Label } from './ui/label';
-import { SITE, getWhatsAppUrl } from '../../lib/site';
+import { SITE, getWhatsAppUrl, getEmailUrl } from '../../lib/site';
 
 const productOptions = [
   'Hydraulic & Hopper Concrete Mixers',
@@ -19,19 +19,17 @@ const productOptions = [
   'Bar Cutting & Bending Machines',
   'Baby Road Rollers & Compactors',
   'Needle Vibrators & Site Equipment',
-  'Other',
+  'Other Construction Machinery',
 ];
 
 export default function InquiryForm() {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, amount: 0.3 });
+  const isInView = useInView(ref, { once: true, amount: 0.1 });
   const [submitted, setSubmitted] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
   const [formData, setFormData] = useState({ name: '', company: '', mobile: '', product: '', message: '' });
 
-  const handleWhatsAppSubmit = () => {
-    const text = [
+  const buildInquiryText = () => {
+    return [
       `*New Inquiry - Ambish Engineering*`,
       formData.name ? `*Name:* ${formData.name}` : '',
       formData.company ? `*Company:* ${formData.company}` : '',
@@ -41,46 +39,39 @@ export default function InquiryForm() {
     ]
       .filter(Boolean)
       .join('\n');
-
-    window.open(getWhatsAppUrl(text || 'Hello! I would like to inquire about your machinery.'), '_blank');
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    setErrorMessage('');
+  const handleWhatsAppSubmit = (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    const text = buildInquiryText() || 'Hello! I would like to inquire about Ambish Engineering machinery.';
+    window.open(getWhatsAppUrl(text), '_blank');
+    setSubmitted(true);
+  };
 
-    try {
-      const response = await fetch('/api/inquiries', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
-      });
+  const handleEmailSubmit = (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    const subject = `Machinery Inquiry - ${formData.product || 'Ambish Engineering'} (${formData.name || 'Website Visitor'})`;
+    const body = [
+      `Name: ${formData.name}`,
+      `Company: ${formData.company || 'N/A'}`,
+      `Mobile: ${formData.mobile}`,
+      `Product of Interest: ${formData.product || 'General Machinery'}`,
+      `Message:\n${formData.message || 'Please send catalog and quotation.'}`,
+    ].join('\n\n');
 
-      const data = await response.json();
-
-      if (!response.ok || !data?.success) {
-        throw new Error(data?.error || 'Unable to submit inquiry right now.');
-      }
-
-      setSubmitted(true);
-      setFormData({ name: '', company: '', mobile: '', product: '', message: '' });
-    } catch (error) {
-      setErrorMessage(error instanceof Error ? error.message : 'Unable to submit inquiry right now.');
-    } finally {
-      setIsSubmitting(false);
-    }
+    window.open(getEmailUrl(subject, body), '_self');
+    setSubmitted(true);
   };
 
   return (
     <section
       id="inquiry-form"
       ref={ref}
-      className="py-24 bg-[#F7F4F0] relative overflow-hidden"
+      className="py-20 md:py-24 bg-[#F7F4F0] relative overflow-hidden"
     >
       {/* Orange ambient glows */}
       <motion.div
-        className="absolute top-20 left-10 w-80 h-80 bg-[#E86A17]/15 rounded-full blur-3xl pointer-events-none"
+        className="absolute top-20 left-10 w-80 h-80 bg-[#E86A17]/10 rounded-full blur-3xl pointer-events-none"
         animate={{ scale: [1, 1.2, 1], x: [0, 40, 0] }}
         transition={{ duration: 15, repeat: Infinity }}
       />
@@ -90,114 +81,148 @@ export default function InquiryForm() {
         transition={{ duration: 15, repeat: Infinity }}
       />
 
-      <div className="container mx-auto px-4 relative z-10">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="grid lg:grid-cols-2 gap-10 lg:gap-12 items-center">
           {/* Left content */}
           <motion.div
-            initial={{ opacity: 0, x: -50 }}
+            initial={{ opacity: 0, x: -30 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.8 }}
+            transition={{ duration: 0.7 }}
             className="text-gray-900"
           >
-            <span className="inline-block mb-5 px-4 py-2 bg-white rounded-full text-sm uppercase tracking-wider text-[#E86A17] border border-[#E86A17]/30 shadow-sm">
+            <span className="inline-block mb-4 px-4 py-1.5 bg-white rounded-full text-xs md:text-sm uppercase tracking-wider text-[#E86A17] font-semibold border border-[#E86A17]/30 shadow-sm">
               Get in Touch
             </span>
 
-            <h2 className="font-serif text-4xl md:text-5xl font-bold mb-6">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight mb-4">
               Start Your Project with{' '}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#E86A17] to-[#FDB813]">
+              <span className="text-[#E86A17]">
                 Ambish Engineering
               </span>
             </h2>
 
-            <p className="text-lg text-gray-600 mb-10">
-              Fill out the form and our team will get back to you within 24 hours with a
-              detailed quote and product recommendations.
+            <p className="text-base sm:text-lg text-slate-600 mb-8 leading-relaxed">
+              Connect directly with our engineering sales team via WhatsApp (+91 98241 83261) or Email (ambishengineering@outlook.com) for immediate quotations and machinery recommendations.
             </p>
 
-            <div className="space-y-6">
+            <div className="space-y-4">
               {[
-                { title: 'Expert Consultation', desc: 'Personalized recommendations from industry experts with 48 years of experience' },
-                { title: 'Competitive Pricing', desc: 'Best value for premium quality machinery — no hidden costs' },
-                { title: 'Fast Response', desc: 'Quick turnaround on all inquiries, typically within 2–4 hours' },
+                { title: 'Expert Consultation', desc: 'Direct guidance from machinery specialists with 48+ years of industry experience' },
+                { title: 'Competitive Factory Pricing', desc: 'Direct manufacturing value for heavy-duty machinery — no intermediaries' },
+                { title: 'Instant Response', desc: 'Quick turnaround on quotes directly on WhatsApp (+91 98241 83261)' },
               ].map((item) => (
-                <motion.div
+                <div
                   key={item.title}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={isInView ? { opacity: 1, x: 0 } : {}}
-                  className="flex items-start gap-4"
+                  className="flex items-start gap-3.5 bg-white/80 p-4 rounded-xl border border-slate-200/80 shadow-sm"
                 >
-                  <div className="w-10 h-10 rounded-full bg-[#E86A17]/20 border border-[#E86A17]/30 flex items-center justify-center flex-shrink-0">
-                    <Check className="w-5 h-5 text-[#E86A17]" />
+                  <div className="w-8 h-8 rounded-lg bg-[#E86A17]/15 flex items-center justify-center flex-shrink-0 mt-0.5 text-[#E86A17]">
+                    <Check className="w-4 h-4" />
                   </div>
                   <div>
-                    <h4 className="font-semibold mb-0.5">{item.title}</h4>
-                    <p className="text-gray-500 text-sm">{item.desc}</p>
+                    <h4 className="font-bold text-slate-800 text-sm mb-0.5">{item.title}</h4>
+                    <p className="text-slate-600 text-xs sm:text-sm leading-relaxed">{item.desc}</p>
                   </div>
-                </motion.div>
+                </div>
               ))}
             </div>
           </motion.div>
 
           {/* Right form */}
           <motion.div
-            initial={{ opacity: 0, x: 50 }}
+            initial={{ opacity: 0, x: 30 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.8 }}
+            transition={{ duration: 0.7 }}
           >
-            <div className="bg-white rounded-2xl p-8 shadow-2xl border border-gray-100">
+            <div className="bg-white rounded-3xl p-6 sm:p-8 shadow-xl border border-slate-200/90">
               {submitted ? (
                 <motion.div
-                  initial={{ opacity: 0, scale: 0.8 }}
+                  initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  className="text-center py-12"
+                  className="text-center py-10"
                 >
-                  <div className="w-20 h-20 rounded-full bg-[#E86A17]/10 flex items-center justify-center mx-auto mb-6">
-                    <Check className="w-10 h-10 text-[#E86A17]" />
+                  <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-4 text-green-600">
+                    <Check className="w-8 h-8" />
                   </div>
-                  <h3 className="text-2xl font-bold text-gray-900 mb-2">Thank You!</h3>
-                  <p className="text-gray-500 mb-6">We have received your inquiry and will get back to you shortly.</p>
-                  <Button
-                    type="button"
-                    variant="outline"
-                    onClick={handleWhatsAppSubmit}
-                    className="border-green-600 text-green-700 hover:bg-green-50 gap-2 font-medium"
+                  <h3 className="text-2xl font-bold text-slate-900 mb-2">Inquiry Ready!</h3>
+                  <p className="text-slate-600 text-sm mb-6 max-w-sm mx-auto">
+                    Your inquiry details have been formatted. Connect directly via WhatsApp or Email below:
+                  </p>
+                  <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                    <Button
+                      type="button"
+                      onClick={handleWhatsAppSubmit}
+                      className="bg-green-600 hover:bg-green-700 text-white gap-2 font-semibold shadow-md"
+                    >
+                      <MessageCircle className="w-4 h-4" />
+                      Chat on WhatsApp (+91 98241 83261)
+                    </Button>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={handleEmailSubmit}
+                      className="border-slate-300 text-slate-700 hover:bg-slate-50 gap-2 font-semibold"
+                    >
+                      <Mail className="w-4 h-4 text-[#E86A17]" />
+                      Send via Outlook Email
+                    </Button>
+                  </div>
+                  <button
+                    onClick={() => {
+                      setSubmitted(false);
+                      setFormData({ name: '', company: '', mobile: '', product: '', message: '' });
+                    }}
+                    className="mt-6 text-xs text-slate-400 hover:text-slate-600 underline"
                   >
-                    <MessageCircle className="w-4 h-4 text-green-600" />
-                    Connect immediately on WhatsApp
-                  </Button>
+                    Submit another inquiry
+                  </button>
                 </motion.div>
               ) : (
-                <form onSubmit={handleSubmit} className="space-y-5">
-                  {errorMessage ? (
-                    <div className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
-                      {errorMessage}
+                <form onSubmit={handleWhatsAppSubmit} className="space-y-4">
+                  <div>
+                    <Label htmlFor="name" className="text-slate-700 font-semibold text-xs uppercase tracking-wider">Full Name *</Label>
+                    <Input
+                      id="name"
+                      type="text"
+                      placeholder="Enter your name"
+                      required
+                      value={formData.name}
+                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                      className="mt-1 bg-slate-50/50 border-slate-200 rounded-xl"
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="company" className="text-slate-700 font-semibold text-xs uppercase tracking-wider">Company Name</Label>
+                      <Input
+                        id="company"
+                        type="text"
+                        placeholder="Company name"
+                        value={formData.company}
+                        onChange={(e) => setFormData({ ...formData, company: e.target.value })}
+                        className="mt-1 bg-slate-50/50 border-slate-200 rounded-xl"
+                      />
                     </div>
-                  ) : null}
 
-                  <div>
-                    <Label htmlFor="name" className="text-gray-700 font-medium">Full Name *</Label>
-                    <Input id="name" type="text" placeholder="Enter your name" required value={formData.name}
-                      onChange={(e) => setFormData({ ...formData, name: e.target.value })} className="mt-1" />
+                    <div>
+                      <Label htmlFor="mobile" className="text-slate-700 font-semibold text-xs uppercase tracking-wider">Mobile Number *</Label>
+                      <Input
+                        id="mobile"
+                        type="tel"
+                        placeholder="+91 98241 83261"
+                        required
+                        value={formData.mobile}
+                        onChange={(e) => setFormData({ ...formData, mobile: e.target.value })}
+                        className="mt-1 bg-slate-50/50 border-slate-200 rounded-xl"
+                      />
+                    </div>
                   </div>
 
                   <div>
-                    <Label htmlFor="company" className="text-gray-700 font-medium">Company Name</Label>
-                    <Input id="company" type="text" placeholder="Enter company name" value={formData.company}
-                      onChange={(e) => setFormData({ ...formData, company: e.target.value })} className="mt-1" />
-                  </div>
-
-                  <div>
-                    <Label htmlFor="mobile" className="text-gray-700 font-medium">Mobile Number *</Label>
-                    <Input id="mobile" type="tel" placeholder={SITE.phoneDisplay} required value={formData.mobile}
-                      onChange={(e) => setFormData({ ...formData, mobile: e.target.value })} className="mt-1" />
-                  </div>
-
-                  <div>
-                    <Label htmlFor="product" className="text-gray-700 font-medium">Product Interest *</Label>
+                    <Label htmlFor="product" className="text-slate-700 font-semibold text-xs uppercase tracking-wider">Product of Interest *</Label>
                     <Select value={formData.product} onValueChange={(value) => setFormData({ ...formData, product: value })}>
-                      <SelectTrigger className="mt-1">
-                        <SelectValue placeholder="Select a product" />
+                      <SelectTrigger className="mt-1 bg-slate-50/50 border-slate-200 rounded-xl">
+                        <SelectValue placeholder="Select machinery type" />
                       </SelectTrigger>
                       <SelectContent>
                         {productOptions.map((option) => (
@@ -208,27 +233,42 @@ export default function InquiryForm() {
                   </div>
 
                   <div>
-                    <Label htmlFor="message" className="text-gray-700 font-medium">Message</Label>
-                    <Textarea id="message" placeholder="Tell us about your requirements..." rows={3}
-                      value={formData.message} onChange={(e) => setFormData({ ...formData, message: e.target.value })} className="mt-1" />
+                    <Label htmlFor="message" className="text-slate-700 font-semibold text-xs uppercase tracking-wider">Message / Project Details</Label>
+                    <Textarea
+                      id="message"
+                      placeholder="Tell us about required capacity, quantity, and project location..."
+                      rows={3}
+                      value={formData.message}
+                      onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                      className="mt-1 bg-slate-50/50 border-slate-200 rounded-xl"
+                    />
                   </div>
 
+                  {/* Submit buttons */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
-                    <Button type="submit" size="lg" disabled={isSubmitting}
-                      className="w-full bg-[#E86A17] hover:bg-[#d05c0f] text-white gap-2 group shadow-lg shadow-[#E86A17]/25 disabled:opacity-70">
-                      <Send className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                      {isSubmitting ? 'Submitting...' : 'Submit Inquiry'}
+                    <Button
+                      type="submit"
+                      size="lg"
+                      className="w-full bg-green-600 hover:bg-green-700 text-white gap-2 font-bold rounded-xl shadow-md shadow-green-900/20"
+                    >
+                      <MessageCircle className="w-4 h-4" />
+                      Send via WhatsApp
                     </Button>
 
-                    <Button type="button" size="lg" variant="outline" onClick={handleWhatsAppSubmit}
-                      className="w-full border-green-600 text-green-700 hover:bg-green-600 hover:text-white gap-2 transition-colors font-medium">
-                      <MessageCircle className="w-5 h-5 text-green-600 group-hover:text-white" />
-                      Chat on WhatsApp
+                    <Button
+                      type="button"
+                      size="lg"
+                      variant="outline"
+                      onClick={handleEmailSubmit}
+                      className="w-full border-slate-300 hover:border-[#E86A17] text-slate-800 hover:text-[#E86A17] gap-2 font-bold rounded-xl"
+                    >
+                      <Mail className="w-4 h-4 text-[#E86A17]" />
+                      Send via Email
                     </Button>
                   </div>
 
-                  <p className="text-xs text-gray-400 text-center">
-                    By submitting this form, you agree to our privacy policy
+                  <p className="text-[11px] text-slate-400 text-center pt-1">
+                    Direct communication to +91 9824183261 & ambishengineering@outlook.com
                   </p>
                 </form>
               )}

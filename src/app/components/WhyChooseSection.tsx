@@ -15,133 +15,118 @@ const features = [
 
 export default function WhyChooseSection() {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, amount: 0.2 });
+  const isInView = useInView(ref, { once: true, amount: 0.1 });
 
   return (
-    <section ref={ref} className="py-24 bg-white relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-br from-[#F7F4F0] via-white to-white pointer-events-none" />
+    <section ref={ref} id="why-choose" className="py-20 md:py-24 bg-white relative overflow-hidden">
+      {/* Subtle background glow */}
+      <div className="absolute inset-0 bg-gradient-to-b from-[#F8FAFC]/50 via-white to-white pointer-events-none" />
+      <div className="absolute -top-32 right-0 w-96 h-96 bg-[#E86A17]/5 rounded-full blur-3xl pointer-events-none" />
 
-      <div className="container mx-auto px-4 relative z-10">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        {/* Section Header */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
-          className="text-center mb-16"
+          className="text-center max-w-3xl mx-auto mb-10 md:mb-12"
         >
-          <span className="inline-block px-4 py-2 bg-[#E86A17]/10 text-[#E86A17] rounded-full text-sm uppercase tracking-wider font-medium mb-4">
+          <span className="inline-block px-4 py-1.5 bg-[#E86A17]/10 text-[#E86A17] rounded-full text-xs md:text-sm uppercase tracking-wider font-semibold mb-3 border border-[#E86A17]/20 shadow-sm">
             Why Choose Us
           </span>
-          <h2 className="font-serif text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight mb-3">
             Your <span className="text-[#E86A17]">Trusted Partner</span> in Construction
           </h2>
-          <p className="text-xl text-gray-500 max-w-2xl mx-auto">
-            Built on decades of trust, reliability, and commitment to excellence
+          <p className="text-slate-600 text-base sm:text-lg">
+            Built on decades of trust, reliability, and commitment to excellence across India.
           </p>
         </motion.div>
 
-        <div className="grid lg:grid-cols-2 gap-12 items-center mb-16">
-          {/* Image side */}
+        {/* Content Layout - items-stretch to keep image & cards in exact equal proportion */}
+        <div className="grid lg:grid-cols-2 gap-6 lg:gap-8 items-stretch mb-12">
+          {/* Image side - expands to match exact height of the cards */}
           <motion.div
-            initial={{ opacity: 0, x: -50 }}
+            initial={{ opacity: 0, x: -30 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.8 }}
-            className="relative"
+            transition={{ duration: 0.7 }}
+            className="relative w-full h-full min-h-[380px] lg:min-h-0 flex flex-col"
           >
-            <div className="relative rounded-2xl overflow-hidden shadow-2xl">
+            <div className="relative w-full h-full min-h-[380px] lg:min-h-full rounded-3xl overflow-hidden shadow-lg border border-slate-100 flex-1">
               <img
                 src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&q=80"
-                alt="Construction site with tower cranes"
-                className="w-full h-[480px] object-cover"
+                alt="Construction site operations"
+                className="absolute inset-0 w-full h-full object-cover select-none"
                 onError={(e) => {
                   (e.target as HTMLImageElement).src =
                     'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80';
                 }}
               />
-              {/* Orange gradient overlay at bottom */}
-              <div className="absolute inset-0 bg-gradient-to-t from-[#1A1A1A]/70 via-transparent to-transparent" />
+              {/* Subtle bottom gradient */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
 
-              {/* Floating badge */}
-              <motion.div
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={isInView ? { opacity: 1, scale: 1 } : {}}
-                transition={{ delay: 0.5 }}
-                className="absolute bottom-8 left-8 bg-white rounded-2xl p-6 shadow-xl"
-              >
-                <div className="text-4xl font-bold text-[#E86A17] mb-1">48+</div>
-                <div className="text-sm text-gray-600 font-medium">Years in Business</div>
-              </motion.div>
+              {/* Floating badge bottom left */}
+              <div className="absolute bottom-6 left-6 bg-white/95 backdrop-blur-sm rounded-2xl p-4 sm:p-5 shadow-lg border border-slate-100 select-none">
+                <div className="text-3xl sm:text-4xl font-extrabold text-[#E86A17] leading-none mb-1">48+</div>
+                <div className="text-xs sm:text-sm text-slate-600 font-semibold">Years in Business</div>
+              </div>
 
               {/* Top right badge */}
-              <motion.div
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={isInView ? { opacity: 1, scale: 1 } : {}}
-                transition={{ delay: 0.7 }}
-                className="absolute top-6 right-6 bg-[#E86A17] rounded-xl p-4 text-white text-center shadow-lg"
-              >
-                <div className="text-2xl font-bold">1000+</div>
-                <div className="text-xs">Projects</div>
-              </motion.div>
+              <div className="absolute top-5 right-5 bg-[#E86A17] rounded-xl px-4 py-2.5 text-white text-center shadow-lg select-none">
+                <div className="text-xl font-bold leading-none mb-0.5">1000+</div>
+                <div className="text-[11px] font-medium opacity-90">Projects</div>
+              </div>
             </div>
-
-            {/* Decorative orange orb */}
-            <motion.div
-              className="absolute -top-6 -left-6 w-24 h-24 bg-[#E86A17]/20 rounded-full blur-2xl"
-              animate={{ scale: [1, 1.3, 1] }}
-              transition={{ duration: 4, repeat: Infinity }}
-            />
           </motion.div>
 
-          {/* Features grid */}
-          <div className="grid sm:grid-cols-2 gap-5">
+          {/* Features grid - 3 rows of 2 cards */}
+          <div className="grid sm:grid-cols-2 gap-4">
             {features.map((feature, index) => {
               const Icon = feature.icon;
               return (
                 <motion.div
                   key={feature.title}
-                  initial={{ opacity: 0, y: 30 }}
+                  initial={{ opacity: 0, y: 20 }}
                   animate={isInView ? { opacity: 1, y: 0 } : {}}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  transition={{ duration: 0.4, delay: index * 0.08 }}
+                  className="bg-[#FAFAFA] rounded-2xl p-5 border border-slate-200/90 shadow-sm flex flex-col justify-start select-text"
                 >
-                  <motion.div
-                    whileHover={{ scale: 1.04, y: -4 }}
-                    className="bg-white rounded-xl p-6 border border-gray-200 hover:border-[#E86A17] hover:shadow-lg transition-all cursor-pointer h-full"
-                  >
-                    <div className="w-11 h-11 rounded-lg bg-gradient-to-br from-[#E86A17] to-[#FF8C38] flex items-center justify-center mb-4 shadow-sm">
-                      <Icon className="w-5 h-5 text-white" />
-                    </div>
-                    <h3 className="font-bold text-gray-900 mb-1">{feature.title}</h3>
-                    <p className="text-gray-500 text-sm leading-relaxed">{feature.description}</p>
-                  </motion.div>
+                  <div className="w-10 h-10 rounded-xl bg-orange-100 text-[#E86A17] flex items-center justify-center mb-3 flex-shrink-0">
+                    <Icon className="w-5 h-5" />
+                  </div>
+                  <h3 className="font-bold text-slate-900 text-base mb-1">
+                    {feature.title}
+                  </h3>
+                  <p className="text-slate-600 text-xs sm:text-sm leading-relaxed">
+                    {feature.description}
+                  </p>
                 </motion.div>
               );
             })}
           </div>
         </div>
 
-        {/* Bottom CTA banner — light with orange accent */}
+        {/* Bottom CTA Banner */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, delay: 0.8 }}
-          className="bg-[#F7F4F0] rounded-2xl p-12 text-gray-900 relative overflow-hidden border border-gray-200"
+          transition={{ duration: 0.6, delay: 0.3 }}
+          className="bg-[#F8FAFC] rounded-3xl p-8 sm:p-10 text-center relative overflow-hidden border border-slate-200/90 shadow-sm max-w-4xl mx-auto"
         >
-          <div className="absolute top-0 right-0 w-64 h-64 bg-[#E86A17]/15 rounded-full blur-3xl" />
-          <div className="absolute bottom-0 left-0 w-48 h-48 bg-[#E86A17]/10 rounded-full blur-3xl" />
-          <div className="relative z-10 text-center max-w-3xl mx-auto">
-            <h3 className="text-3xl md:text-4xl font-bold mb-4">
+          <div className="relative z-10 max-w-2xl mx-auto space-y-4">
+            <h3 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
               Ready to Experience the Ambish Difference?
             </h3>
-            <p className="text-lg text-gray-600 mb-8">
-              Join hundreds of satisfied contractors who trust us for their construction machinery needs
+            <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
+              Join hundreds of satisfied contractors across India who rely on us for rugged machinery, honest advice, and lifelong support.
             </p>
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => document.getElementById('inquiry-form')?.scrollIntoView({ behavior: 'smooth' })}
-              className="px-8 py-4 bg-[#E86A17] hover:bg-[#d05c0f] text-white rounded-full transition-colors font-medium shadow-lg shadow-[#E86A17]/30"
-            >
-              Get Started Today
-            </motion.button>
+            <div className="pt-2">
+              <button
+                onClick={() => document.getElementById('inquiry-form')?.scrollIntoView({ behavior: 'smooth' })}
+                className="px-8 py-3.5 bg-[#E86A17] hover:bg-[#d25c10] text-white rounded-xl font-bold text-sm transition-colors shadow-md shadow-[#E86A17]/25"
+              >
+                Get Started Today
+              </button>
+            </div>
           </div>
         </motion.div>
       </div>
