@@ -245,6 +245,9 @@ export default function InquiryForm() {
                         id="name"
                         type="text"
                         placeholder="Enter your name"
+                        aria-required="true"
+                        aria-invalid={Boolean(touched.name && errors.name)}
+                        aria-describedby={touched.name && errors.name ? "name-error" : undefined}
                         value={formData.name}
                         onChange={(e) => handleChange('name', e.target.value)}
                         onBlur={() => handleBlur('name')}
@@ -255,8 +258,8 @@ export default function InquiryForm() {
                         }`}
                       />
                       {touched.name && errors.name && (
-                        <p className="flex items-center gap-1 text-red-500 text-[10px] mt-1 font-medium">
-                          <AlertCircle className="w-3 h-3" />
+                        <p id="name-error" role="alert" className="flex items-center gap-1 text-red-500 text-[10px] mt-1 font-medium">
+                          <AlertCircle className="w-3 h-3 flex-shrink-0" />
                           <span>{errors.name}</span>
                         </p>
                       )}
@@ -287,6 +290,9 @@ export default function InquiryForm() {
                           id="mobile"
                           type="tel"
                           placeholder="+91 9876543210"
+                          aria-required="true"
+                          aria-invalid={Boolean(touched.mobile && errors.mobile)}
+                          aria-describedby={touched.mobile && errors.mobile ? "mobile-error" : undefined}
                           value={formData.mobile}
                           onChange={(e) => handleChange('mobile', e.target.value)}
                           onBlur={() => handleBlur('mobile')}
@@ -297,8 +303,8 @@ export default function InquiryForm() {
                           }`}
                         />
                         {touched.mobile && errors.mobile && (
-                          <p className="flex items-center gap-1 text-red-500 text-[10px] mt-1 font-medium">
-                            <AlertCircle className="w-3 h-3" />
+                          <p id="mobile-error" role="alert" className="flex items-center gap-1 text-red-500 text-[10px] mt-1 font-medium">
+                            <AlertCircle className="w-3 h-3 flex-shrink-0" />
                             <span>{errors.mobile}</span>
                           </p>
                         )}
@@ -318,6 +324,10 @@ export default function InquiryForm() {
                         }}
                       >
                         <SelectTrigger
+                          id="product"
+                          aria-required="true"
+                          aria-invalid={Boolean(touched.product && errors.product)}
+                          aria-describedby={touched.product && errors.product ? "product-error" : undefined}
                           className={`mt-1 rounded-xl text-xs py-2 h-9 transition-colors ${
                             touched.product && errors.product
                               ? 'bg-red-50/40 border-red-400 focus:border-red-500'
@@ -333,8 +343,8 @@ export default function InquiryForm() {
                         </SelectContent>
                       </Select>
                       {touched.product && errors.product && (
-                        <p className="flex items-center gap-1 text-red-500 text-[10px] mt-1 font-medium">
-                          <AlertCircle className="w-3 h-3" />
+                        <p id="product-error" role="alert" className="flex items-center gap-1 text-red-500 text-[10px] mt-1 font-medium">
+                          <AlertCircle className="w-3 h-3 flex-shrink-0" />
                           <span>{errors.product}</span>
                         </p>
                       )}

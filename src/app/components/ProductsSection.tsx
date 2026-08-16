@@ -230,6 +230,51 @@ export const PRODUCTS: ProductItem[] = [
 
 ];
 
+function ProductCardItem({ product }: { product: ProductItem }) {
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  return (
+    <motion.div
+      layout
+      initial={{ opacity: 0, scale: 0.96 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.96 }}
+      transition={{ duration: 0.2 }}
+      className="group flex flex-col justify-start select-text"
+    >
+      {/* Studio Product Canvas (with Smooth Shimmer Loading State) */}
+      <div className="relative aspect-[4/3] w-full rounded-2xl overflow-hidden bg-slate-50 border border-slate-200/70 p-3 sm:p-4 mb-2.5 transition-all group-hover:border-[#E86A17]/40 group-hover:bg-orange-50/20">
+        {/* Dynamic Skeleton Loader until Image Renders */}
+        {!isLoaded && (
+          <div className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-br from-slate-100 via-slate-50 to-slate-100 z-10 p-4">
+            <div className="w-7 h-7 rounded-full border-2 border-slate-200 border-t-[#E86A17] animate-spin mb-2" />
+            <div className="w-20 h-2 bg-slate-200/80 rounded-full animate-pulse" />
+          </div>
+        )}
+
+        <Image
+          src={product.image}
+          alt={`${product.name} - Ambish Engineering Heavy Construction Machinery`}
+          fill
+          loading="lazy"
+          decoding="async"
+          quality={82}
+          sizes="(min-width: 1024px) 25vw, (min-width: 640px) 33vw, 50vw"
+          onLoad={() => setIsLoaded(true)}
+          className={`object-contain p-2 group-hover:scale-105 transition-all duration-500 select-none ${
+            isLoaded ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
+          }`}
+        />
+      </div>
+
+      {/* Clean Machinery Title */}
+      <h3 className="font-bold text-slate-900 text-xs sm:text-sm leading-snug group-hover:text-[#E86A17] transition-colors line-clamp-2">
+        {product.name}
+      </h3>
+    </motion.div>
+  );
+}
+
 export default function ProductsSection() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, amount: 0.05 });
@@ -292,7 +337,7 @@ export default function ProductsSection() {
               <span>Industrial Machinery Catalog</span>
             </div>
             <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
-              Heavy Construction <span className="text-[#E86A17]">Equipment Range</span>
+              Construction <span className="text-[#E86A17]">Equipment Range</span>
             </h2>
           </div>
           <p className="text-slate-600 text-sm sm:text-base max-w-md">
@@ -381,31 +426,7 @@ export default function ProductsSection() {
           >
             <AnimatePresence>
               {filteredProducts.map((product) => (
-                <motion.div
-                  key={product.id}
-                  layout
-                  initial={{ opacity: 0, scale: 0.96 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.96 }}
-                  transition={{ duration: 0.2 }}
-                  className="group flex flex-col justify-start select-text"
-                >
-                  {/* Studio Product Canvas (No chunky box card borders) */}
-                  <div className="relative aspect-[4/3] w-full rounded-2xl overflow-hidden bg-slate-50 border border-slate-200/70 p-3 sm:p-4 mb-2.5 transition-all group-hover:border-[#E86A17]/40 group-hover:bg-orange-50/20">
-                    <Image
-                      src={product.image}
-                      alt={product.name}
-                      fill
-                      sizes="(min-width: 1024px) 25vw, (min-width: 640px) 33vw, 50vw"
-                      className="object-contain p-2 group-hover:scale-105 transition-transform duration-300 select-none"
-                    />
-                  </div>
-
-                  {/* Clean Machinery Title */}
-                  <h3 className="font-bold text-slate-900 text-xs sm:text-sm leading-snug group-hover:text-[#E86A17] transition-colors line-clamp-2">
-                    {product.name}
-                  </h3>
-                </motion.div>
+                <ProductCardItem key={product.id} product={product} />
               ))}
             </AnimatePresence>
           </motion.div>

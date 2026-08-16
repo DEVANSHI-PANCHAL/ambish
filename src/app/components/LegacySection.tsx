@@ -187,9 +187,11 @@ export default function LegacySection() {
                   <div className="relative aspect-[4/3] w-full rounded-xl overflow-hidden bg-slate-100 shadow-inner">
                     <Image
                       src={src}
-                      alt={`Ambish Heritage Archive Photo ${idx + 1}`}
+                      alt={`Ambish Engineering Historical Fabrication Archive Frame #${String((idx % HERITAGE_PHOTOS.length) + 1).padStart(2, '0')}`}
                       fill
                       sizes="300px"
+                      quality={82}
+                      decoding="async"
                       className="object-cover scale-[1.08] group-hover:scale-[1.14] transition-transform duration-300 select-none"
                       priority={idx < 4}
                     />

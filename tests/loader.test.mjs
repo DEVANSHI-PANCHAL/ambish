@@ -3,7 +3,12 @@ import assert from 'node:assert';
 async function testLoader() {
   console.log('🧪 Running Test Suite: Loader SSR & Immediate Visibility Verification...');
 
-  const res = await fetch('http://localhost:3001');
+  let res;
+  try {
+    res = await fetch('http://localhost:3000');
+  } catch {
+    res = await fetch('http://localhost:3001');
+  }
   assert.strictEqual(res.status, 200, 'Server should respond with HTTP 200 OK');
 
   const html = await res.text();

@@ -67,7 +67,7 @@ export default function Footer() {
               <AmbishLogo width={172} variant="light" />
             </div>
             <p className="text-gray-600 mb-5 text-xs sm:text-sm leading-relaxed">
-              Your trusted partner in heavy construction machinery for nearly 50 years.
+              Your trusted partner in construction machinery for nearly 50 years.
               Building India, one machine at a time.
             </p>
             <div className="flex gap-2.5">

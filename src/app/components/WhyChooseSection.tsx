@@ -1,9 +1,10 @@
 "use client";
 
+import Image from 'next/image';
 import { motion, useInView } from 'motion/react';
 import { useRef } from 'react';
 import { Shield, Users, Heart, CheckCircle, Handshake, Headphones, ArrowUpRight } from 'lucide-react';
-import { WHATSAPP_URL } from '@/lib/site';
+import { SITE } from '../../lib/site';
 
 const features = [
   { icon: Shield, title: 'Since 1976', description: 'Five decades of proven manufacturing and field-tested machinery reliability.' },
@@ -41,26 +42,27 @@ export default function WhyChooseSection() {
           </p>
         </motion.div>
 
-        {/* 2-Column Split Showcase (No Clunky Card Boxes) */}
+        {/* 2-Column Split Showcase */}
         <div className="grid lg:grid-cols-12 gap-8 lg:gap-12 items-center mb-12">
           {/* Image Column (5 cols) */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.6 }}
-            className="lg:col-span-5 relative w-full h-[380px] lg:h-[480px] rounded-2xl overflow-hidden shadow-lg border border-slate-200"
+            className="lg:col-span-5 relative w-full h-[380px] lg:h-[480px] rounded-2xl overflow-hidden shadow-lg border border-slate-200 bg-slate-900"
           >
-            <img
-              src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&q=80"
-              alt="Heavy construction machinery on site"
-              className="w-full h-full object-cover select-none"
-              onError={(e) => {
-                (e.target as HTMLImageElement).src =
-                  'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80';
-              }}
+            <Image
+              src="/const-site.jpeg"
+              alt="Ambish Engineering heavy construction machinery on active job site"
+              fill
+              loading="lazy"
+              decoding="async"
+              quality={82}
+              sizes="(min-width: 1024px) 40vw, 100vw"
+              className="object-cover select-none"
             />
             {/* Gradient Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent pointer-events-none" />
 
             {/* Bottom Overlay Badge */}
             <div className="absolute bottom-6 left-6 right-6 flex items-center justify-between bg-white/95 backdrop-blur-md p-4 rounded-xl shadow-md border border-slate-100">
@@ -121,7 +123,7 @@ export default function WhyChooseSection() {
           </div>
 
           <a
-            href={WHATSAPP_URL}
+            href={SITE.whatsappUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="px-6 py-3 bg-[#E86A17] hover:bg-[#D45A0E] text-white rounded-xl text-sm font-bold shadow-lg shadow-[#E86A17]/25 transition-all flex items-center gap-2 flex-shrink-0 hover:scale-105"

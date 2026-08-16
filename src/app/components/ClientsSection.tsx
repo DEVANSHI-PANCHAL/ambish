@@ -99,7 +99,7 @@ export default function ClientsSection() {
             </h2>
           </div>
           <p className="text-slate-600 text-sm sm:text-base max-w-md">
-            Supplying heavy construction machinery to India&apos;s most demanding infrastructure, township, and high-rise developments.
+            Supplying construction machinery to India&apos;s most demanding infrastructure, township, and high-rise developments.
           </p>
         </motion.div>
       </div>

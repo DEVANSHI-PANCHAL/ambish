@@ -13,7 +13,7 @@ const navItems = [
   { label: "Products", href: "#products" },
   { label: "Why Choose Us", href: "#why-choose" },
   { label: "Clients", href: "#clients" },
-  { label: "Contact", href: "#contact" },
+  { label: "Visit Us", href: "#contact" },
 ];
 
 export default function Header() {
@@ -83,19 +83,6 @@ export default function Header() {
               </nav>
 
               <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => window.open(`tel:${SITE.phone}`, "_self")}
-                className={`border text-sm font-medium transition-colors ${
-                  isScrolled
-                    ? "border-slate-300 text-slate-950 hover:bg-slate-100"
-                    : "border-white/15 text-white/90 hover:text-white hover:bg-white/10"
-                }`}
-              >
-                Call Us
-              </Button>
-
-              <Button
                 size="sm"
                 onClick={() =>
                   document
@@ -111,6 +98,8 @@ export default function Header() {
             {/* Mobile Menu Button */}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              aria-label={isMobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
+              aria-expanded={isMobileMenuOpen}
               className={`lg:hidden ml-auto p-2 ${
                 isScrolled ? "text-slate-950" : "text-white"
               }`}
@@ -152,15 +141,6 @@ export default function Header() {
               </nav>
 
               <div className="mt-12 flex flex-col gap-4">
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="border-white/30 text-white hover:bg-white/10"
-                  onClick={() => window.open(`tel:${SITE.phone}`, "_self")}
-                >
-                  Call Us
-                </Button>
-
                 <Button
                   size="lg"
                   className="bg-[#E86A17] hover:bg-[#d05c0f] text-white"
