@@ -3,6 +3,7 @@
 import { motion, AnimatePresence } from 'motion/react';
 import { MessageCircle, X } from 'lucide-react';
 import { useState } from 'react';
+import { getWhatsAppUrl } from '../../lib/site';
 
 export default function FloatingWhatsApp() {
   const [showTooltip, setShowTooltip] = useState(false);
@@ -38,7 +39,7 @@ export default function FloatingWhatsApp() {
         animate={{ scale: 1 }}
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
-        onClick={() => window.open('https://wa.me/919876543210', '_blank')}
+        onClick={() => window.open(getWhatsAppUrl('Hello! I would like to inquire about Ambish Engineering products.'), '_blank')}
         onMouseEnter={() => setShowTooltip(true)}
         onMouseLeave={() => setShowTooltip(false)}
         className="w-16 h-16 bg-green-500 hover:bg-green-600 text-white rounded-full shadow-2xl flex items-center justify-center group relative"

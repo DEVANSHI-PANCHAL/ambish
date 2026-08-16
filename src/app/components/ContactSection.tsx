@@ -2,164 +2,140 @@
 
 import { motion, useInView } from 'motion/react';
 import { useRef } from 'react';
-import { MapPin, Phone, Mail, MessageCircle, Clock } from 'lucide-react';
-import { Button } from './ui/button';
+import { MapPin, Phone, Mail, MessageCircle, Clock, ExternalLink } from 'lucide-react';
+import { SITE, getWhatsAppUrl } from '../../lib/site';
 
 export default function ContactSection() {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, amount: 0.3 });
+  const isInView = useInView(ref, { once: true, amount: 0.15 });
 
   return (
-    <section ref={ref} className="py-24 bg-white">
-      <div className="container mx-auto px-4">
+    <section ref={ref} id="contact" className="py-12 md:py-16 bg-white border-t border-slate-200/60">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Section Header */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 15 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
+          transition={{ duration: 0.5 }}
+          className="text-center max-w-2xl mx-auto mb-8"
         >
-          <span className="inline-block px-4 py-2 bg-[#E86A17]/10 text-[#E86A17] rounded-full text-sm uppercase tracking-wider font-medium mb-4">
+          <span className="inline-block px-3.5 py-1 bg-[#E86A17]/10 text-[#E86A17] rounded-full text-xs uppercase tracking-wider font-semibold mb-2 border border-[#E86A17]/20 shadow-sm">
             Contact Us
           </span>
-          <h2 className="font-serif text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-            Visit Our <span className="text-[#E86A17]">Showroom</span>
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight mb-2">
+            Visit <span className="text-[#E86A17]">Us</span>
           </h2>
-          <p className="text-xl text-gray-500 max-w-2xl mx-auto">
-            Located in the heart of Ahmedabad, serving clients across India since 1976
+          <p className="text-slate-600 text-xs sm:text-sm">
+            Located in Ahmedabad, serving civil contractors and developers across India since 1976.
           </p>
         </motion.div>
 
-        <div className="grid lg:grid-cols-3 gap-6 mb-12">
-          {/* Location */}
+        {/* 2-Column Split: Clean Stacked Cards on Left, High-Zoom Map on Right */}
+        <div className="grid lg:grid-cols-12 gap-6 items-stretch max-w-6xl mx-auto">
+          {/* Left Column: 3 Harmonious Stacked Cards (5 cols) */}
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ delay: 0.1 }}
+            initial={{ opacity: 0, x: -20 }}
+            animate={isInView ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.5 }}
+            className="lg:col-span-5 flex flex-col gap-3.5 justify-between"
           >
-            <motion.div
-              whileHover={{ scale: 1.03, y: -4 }}
-              className="bg-[#F7F4F0] rounded-2xl p-8 text-gray-900 h-full relative overflow-hidden border border-gray-200"
-            >
-              <div className="absolute top-0 right-0 w-32 h-32 bg-[#E86A17]/10 rounded-full blur-2xl" />
-              <div className="w-14 h-14 rounded-xl bg-[#E86A17]/20 border border-[#E86A17]/30 flex items-center justify-center mb-6">
-                <MapPin className="w-7 h-7 text-[#E86A17]" />
+            {/* Card 1: Works & Office */}
+            <div className="bg-[#FAF9F6] rounded-2xl p-4 sm:p-5 border border-slate-200/90 shadow-sm flex items-start gap-3.5">
+              <div className="w-10 h-10 rounded-xl bg-[#E86A17]/15 flex items-center justify-center flex-shrink-0 text-[#E86A17] mt-0.5">
+                <MapPin className="w-5 h-5" />
               </div>
-              <h3 className="text-xl font-bold mb-3 text-gray-900">Our Location</h3>
-              <p className="text-gray-600 leading-relaxed">
-                Ambish Engineering<br />
-                Industrial Area, Odhav<br />
-                Ahmedabad – 382415<br />
-                Gujarat, India
-              </p>
-            </motion.div>
-          </motion.div>
+              <div className="flex-1 min-w-0">
+                <h3 className="text-sm font-bold text-slate-900 mb-1">Our Works & Office</h3>
+                <p className="text-slate-600 leading-relaxed text-xs">
+                  {SITE.address.full}
+                </p>
+              </div>
+            </div>
 
-          {/* Phone */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ delay: 0.2 }}
-          >
-            <motion.div
-              whileHover={{ scale: 1.03, y: -4 }}
-              className="bg-gradient-to-br from-[#E86A17] to-[#FF8C38] rounded-2xl p-8 text-white h-full"
-            >
-              <div className="w-14 h-14 rounded-xl bg-white/20 flex items-center justify-center mb-6">
-                <Phone className="w-7 h-7" />
+            {/* Card 2: Phone & WhatsApp (Clean & Harmonized) */}
+            <div className="bg-[#FAF9F6] rounded-2xl p-4 sm:p-5 border border-slate-200/90 shadow-sm flex items-start gap-3.5">
+              <div className="w-10 h-10 rounded-xl bg-green-500/15 flex items-center justify-center flex-shrink-0 text-green-600 mt-0.5">
+                <Phone className="w-5 h-5" />
               </div>
-              <h3 className="text-xl font-bold mb-3">Phone & WhatsApp</h3>
-              <div className="space-y-2 text-white/90">
-                <a href="tel:+919876543210" className="block hover:text-white transition-colors font-medium">
-                  +91 98765 43210
-                </a>
-                <a href="tel:+917926345678" className="block hover:text-white transition-colors">
-                  079 2634 5678
-                </a>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="mt-4 border-white text-white hover:bg-white hover:text-[#E86A17] font-medium"
-                  onClick={() => window.open('https://wa.me/919876543210', '_blank')}
-                >
-                  <MessageCircle className="w-4 h-4 mr-2" />
-                  Chat on WhatsApp
-                </Button>
-              </div>
-            </motion.div>
-          </motion.div>
+              <div className="flex-1 min-w-0">
+                <h3 className="text-sm font-bold text-slate-900 mb-0.5">Direct Sales & Support</h3>
+                <div className="flex flex-wrap items-center justify-between gap-2 mt-1">
+                  <a
+                    href={`tel:${SITE.phone}`}
+                    className="text-base sm:text-lg font-black text-slate-900 hover:text-[#E86A17] transition-colors"
+                  >
+                    {SITE.phoneDisplay}
+                  </a>
 
-          {/* Email & Hours */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ delay: 0.3 }}
-          >
-            <motion.div
-              whileHover={{ scale: 1.03, y: -4 }}
-              className="bg-[#F7F4F0] rounded-2xl p-8 h-full border border-gray-200"
-            >
-              <div className="w-14 h-14 rounded-xl bg-[#E86A17]/10 flex items-center justify-center mb-6">
-                <Mail className="w-7 h-7 text-[#E86A17]" />
-              </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-3">Email & Hours</h3>
-              <div className="space-y-3 text-gray-600">
-                <a href="mailto:info@ambishengineering.com"
-                  className="block hover:text-[#E86A17] transition-colors font-medium text-sm">
-                  info@ambishengineering.com
-                </a>
-                <div className="flex items-start gap-2 mt-4">
-                  <Clock className="w-5 h-5 mt-0.5 text-[#E86A17] flex-shrink-0" />
-                  <div className="text-sm">
-                    <div>Mon – Sat: 9:00 AM – 7:00 PM</div>
-                    <div className="text-gray-400">Sunday: Closed</div>
-                  </div>
+                  <button
+                    onClick={() =>
+                      window.open(
+                        getWhatsAppUrl('Hello Gaurang, I want to inquire about Ambish Engineering machinery products.'),
+                        '_blank'
+                      )
+                    }
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-green-600 hover:bg-green-700 text-white rounded-xl text-xs font-bold transition-all shadow-sm hover:scale-105"
+                  >
+                    <MessageCircle className="w-3.5 h-3.5" />
+                    <span>WhatsApp</span>
+                  </button>
                 </div>
               </div>
-            </motion.div>
+            </div>
+
+            {/* Card 3: Email & Business Hours */}
+            <div className="bg-[#FAF9F6] rounded-2xl p-4 sm:p-5 border border-slate-200/90 shadow-sm flex items-start gap-3.5">
+              <div className="w-10 h-10 rounded-xl bg-[#E86A17]/15 flex items-center justify-center flex-shrink-0 text-[#E86A17] mt-0.5">
+                <Mail className="w-5 h-5" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <h3 className="text-sm font-bold text-slate-900 mb-0.5">Email & Working Hours</h3>
+                <a
+                  href={`mailto:${SITE.email}`}
+                  className="block text-xs font-bold text-[#E86A17] hover:underline break-all mb-1.5"
+                >
+                  {SITE.email}
+                </a>
+                <div className="flex items-center gap-1.5 text-[11px] text-slate-500 font-medium">
+                  <Clock className="w-3.5 h-3.5 text-[#E86A17]" />
+                  <span>Mon – Sat: 9:00 AM – 7:00 PM</span>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Right Column: Close-Up Zoomed Google Map (7 cols) */}
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={isInView ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.5 }}
+            className="lg:col-span-7 rounded-2xl overflow-hidden shadow-md border border-slate-200/90 h-[320px] lg:h-auto min-h-[300px] relative group"
+          >
+            <div className="relative w-full h-full bg-slate-100 min-h-[320px]">
+              <iframe
+                src="https://maps.google.com/maps?q=22.9874058,72.4697647&hl=en&z=15&output=embed"
+                width="100%"
+                height="100%"
+                style={{ border: 0, minHeight: '320px' }}
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                title="Ambish Engineering Location - 22°59'14.7N 72°28'11.2E"
+              />
+
+              {/* Floating Direct Maps Link */}
+              <a
+                href={SITE.mapUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="absolute top-3 right-3 bg-white/95 backdrop-blur-sm px-3 py-1.5 rounded-xl shadow-md border border-slate-200/90 text-xs font-bold text-slate-800 hover:text-[#E86A17] flex items-center gap-1.5 transition-all duration-200 hover:scale-105"
+              >
+                <span>Open in Google Maps</span>
+                <ExternalLink className="w-3.5 h-3.5 text-[#E86A17]" />
+              </a>
+            </div>
           </motion.div>
         </div>
-
-        {/* Map */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ delay: 0.4 }}
-          className="rounded-2xl overflow-hidden shadow-xl border border-gray-200"
-        >
-          <div className="relative w-full h-[400px] bg-gray-100">
-            <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d235014.22815857384!2d72.41493028359707!3d23.02047499022709!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x395e848aba5bd449%3A0x4fcedd11614f6516!2sAhmedabad%2C%20Gujarat!5e0!3m2!1sen!2sin!4v1234567890"
-              width="100%"
-              height="100%"
-              style={{ border: 0 }}
-              allowFullScreen
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-              title="Ambish Engineering Location"
-            />
-          </div>
-        </motion.div>
-
-        {/* CTA Banner */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ delay: 0.5 }}
-          className="mt-12 bg-[#F7F4F0] rounded-2xl p-8 border border-gray-200 text-center"
-        >
-          <h3 className="text-2xl font-bold text-gray-900 mb-3">Prefer to Visit Us in Person?</h3>
-          <p className="text-gray-500 mb-6 max-w-2xl mx-auto">
-            Schedule a visit to our showroom to see our machinery in action and speak with our expert team.
-          </p>
-          <Button
-            size="lg"
-            className="bg-[#E86A17] hover:bg-[#d05c0f] text-white shadow-md"
-            onClick={() => window.open('tel:+919876543210', '_self')}
-          >
-            <Phone className="w-5 h-5 mr-2" />
-            Call to Schedule Visit
-          </Button>
-        </motion.div>
       </div>
     </section>
   );
