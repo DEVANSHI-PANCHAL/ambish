@@ -5,10 +5,7 @@ import { SITE } from '../src/lib/site';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.ambishengineering.com'),
-  title: {
-    default: 'Ambish Engineering – Heavy Construction Machinery Manufacturer | Ahmedabad, Gujarat',
-    template: '%s | Ambish Engineering',
-  },
+  title: 'Ambish Engineering',
   description:
     'Ambish Engineering manufactures and supplies heavy-duty construction machinery across India since 1976. Hydraulic concrete mixers, material hoist lifts, power trowels, road rollers, bar cutting & bending machines, and site vibrators in Ahmedabad, Gujarat.',
   keywords: [
@@ -36,7 +33,7 @@ export const metadata: Metadata = {
     canonical: 'https://www.ambishengineering.com',
   },
   openGraph: {
-    title: 'Ambish Engineering – Heavy Construction Machinery Manufacturer Since 1976',
+    title: 'Ambish Engineering',
     description:
       'Serving builders and contractors across India for 48+ years with heavy-duty concrete mixers, hoists, rebar cutters, and earth compactors.',
     url: 'https://www.ambishengineering.com',
@@ -54,7 +51,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Ambish Engineering – Construction Machinery Manufacturer Since 1976',
+    title: 'Ambish Engineering',
     description:
       'Heavy-duty construction machinery manufactured in Ahmedabad, Gujarat. Hydraulic mixers, material hoists, and rebar equipment.',
     images: ['/ambish-logo.png'],
@@ -71,9 +68,13 @@ export const metadata: Metadata = {
     },
   },
   icons: {
-    icon: '/ambish-logo.png',
-    shortcut: '/ambish-logo.png',
-    apple: '/ambish-logo.png',
+    icon: [
+      { url: '/favicon.ico', sizes: '32x32' },
+      { url: '/favicon.png', type: 'image/png', sizes: '32x32' },
+      { url: '/icon.png', type: 'image/png', sizes: '512x512' },
+    ],
+    shortcut: '/favicon.ico',
+    apple: '/apple-icon.png',
   },
 };
 
