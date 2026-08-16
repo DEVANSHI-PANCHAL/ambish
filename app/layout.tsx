@@ -97,7 +97,7 @@ const jsonLd = {
       description:
         'Leading manufacturer and supplier of heavy-duty construction machinery in Ahmedabad, Gujarat since 1976.',
       telephone: '+919824183261',
-      email: 'ambishengineering@outlook.com',
+      email: 'contact@ambishengineering.com',
       foundingDate: '1976',
       priceRange: '₹₹₹',
       address: {

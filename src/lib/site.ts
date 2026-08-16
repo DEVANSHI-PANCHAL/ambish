@@ -7,7 +7,7 @@ export const SITE = {
     'Ambish Engineering supplies construction machinery — tower hoists, concrete mixers, road rollers, bar cutting & bending machines across India. 48+ years of trust. Get a free quote today.',
   phone: '+919824183261',
   phoneDisplay: '+91 98241 83261',
-  email: 'ambishengineering@outlook.com',
+  email: 'contact@ambishengineering.com',
   address: {
     street: 'Shop no 01, Nice complex, near Nice bakery, opp safar hotel, Shantipura chokdi',
     city: 'Ahmedabad',
