@@ -39,7 +39,7 @@ export default function InquiryForm() {
       if (!value.trim()) return 'Mobile number is required.';
       if (clean.length < 10) return 'Please enter a valid 10-digit mobile number.';
     } else if (field === 'product') {
-      if (!value) return 'Please select a machinery product of interest.';
+      if (!value || !value.trim()) return 'Please select a machinery product of interest.';
     }
     return '';
   };
@@ -98,20 +98,27 @@ export default function InquiryForm() {
   const handleEmailSubmit = () => {
     if (!validateAll()) return;
 
-    const subject = `Machinery Inquiry from ${formData.name || 'Website Visitor'}${formData.company ? ` (${formData.company})` : ''}`;
+    const subject = `Machinery Inquiry: ${formData.product || 'Construction Equipment'} - ${formData.name || 'Client'}${formData.company ? ` (${formData.company})` : ''}`;
     const body = [
       `Dear Ambish Engineering Sales Team,`,
       `I would like to inquire about the following construction machinery:`,
-      `Product: ${formData.product || 'Not specified'}`,
-      `Name: ${formData.name || 'Not provided'}`,
-      `Company: ${formData.company || 'Not provided'}`,
-      `Mobile: ${formData.mobile || 'Not provided'}`,
-      `Requirements / Message:\n${formData.message || 'No additional details provided.'}`,
-      `Please provide quotation and specifications at your earliest convenience.`,
+      `Product of Interest: ${formData.product || 'Not specified'}`,
+      `Client Name: ${formData.name || 'Not provided'}`,
+      `Company Name: ${formData.company || 'Not provided'}`,
+      `Mobile Number: ${formData.mobile || 'Not provided'}`,
+      `Requirements / Message:\n${formData.message || 'Please provide specifications and price quotation.'}`,
+      `Thank you.`,
     ].join('\n\n');
 
     window.open(getEmailUrl(subject, body), '_self');
     setSubmitted(true);
+  };
+
+  const resetForm = () => {
+    setSubmitted(false);
+    setFormData({ name: '', company: '', mobile: '', product: '', message: '' });
+    setTouched({ name: false, mobile: false, product: false });
+    setErrors({});
   };
 
   return (
@@ -148,35 +155,46 @@ export default function InquiryForm() {
 
               <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight mb-3">
                 Start Your Project with{' '}
-                <span className="text-[#E86A17]">
-                  Ambish Engineering
-                </span>
+                <span className="text-[#E86A17]">Ambish Engineering</span>
               </h2>
 
-              <p className="text-sm sm:text-base text-slate-600 mb-6 leading-relaxed">
-                Connect directly with our engineering sales team via WhatsApp or Email for immediate quotations and machinery recommendations.
+              <p className="text-slate-600 text-sm sm:text-base leading-relaxed mb-6">
+                Connect directly with our engineering sales team via WhatsApp or Email for immediate quotations and
+                machinery recommendations.
               </p>
             </div>
 
-            {/* Left 3 Aligned Feature Cards */}
-            <div className="space-y-3.5 pt-2">
+            {/* Quick Benefits / Trust Badges */}
+            <div className="space-y-3.5 my-auto py-2">
               {[
-                { title: 'Expert Consultation', desc: 'Direct guidance from machinery specialists with 48+ years of industry experience' },
-                { title: 'Competitive Factory Pricing', desc: 'Get the best value for heavy-duty machinery' },
-                { title: 'Instant Response', desc: 'Quick turnaround on quotes directly on WhatsApp' },
-              ].map((item) => (
-                <div
-                  key={item.title}
-                  className="flex items-start gap-3.5 bg-white p-4 rounded-2xl border border-slate-200/80 shadow-sm"
+                {
+                  title: 'Expert Consultation',
+                  desc: 'Direct guidance from machinery specialists with 48+ years of industry experience',
+                },
+                {
+                  title: 'Competitive Factory Pricing',
+                  desc: 'Get the best value for heavy-duty machinery',
+                },
+                {
+                  title: 'Instant Response',
+                  desc: 'Quick turnaround on quotes directly to your phone or inbox',
+                },
+              ].map((benefit, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={isInView ? { opacity: 1, y: 0 } : {}}
+                  transition={{ duration: 0.4, delay: 0.2 + i * 0.1 }}
+                  className="flex items-start gap-3 bg-white/80 backdrop-blur-sm p-3.5 rounded-2xl border border-slate-200/80 shadow-xs"
                 >
-                  <div className="w-7 h-7 rounded-lg bg-[#E86A17]/15 flex items-center justify-center flex-shrink-0 mt-0.5 text-[#E86A17]">
-                    <Check className="w-4 h-4" />
+                  <div className="w-5 h-5 rounded-full bg-[#E86A17]/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <Check className="w-3 h-3 text-[#E86A17]" />
                   </div>
                   <div>
-                    <h4 className="font-bold text-slate-800 text-sm mb-0.5">{item.title}</h4>
-                    <p className="text-slate-600 text-xs leading-relaxed">{item.desc}</p>
+                    <h4 className="text-xs sm:text-sm font-bold text-slate-900 leading-snug">{benefit.title}</h4>
+                    <p className="text-slate-500 text-[11px] sm:text-xs leading-normal mt-0.5">{benefit.desc}</p>
                   </div>
-                </div>
+                </motion.div>
               ))}
             </div>
           </motion.div>
@@ -218,16 +236,11 @@ export default function InquiryForm() {
                       className="border-slate-300 text-slate-700 hover:bg-slate-50 gap-2 font-semibold rounded-xl"
                     >
                       <Mail className="w-4 h-4 text-[#E86A17]" />
-                      Send via Outlook Email
+                      Send via Email
                     </Button>
                   </div>
                   <button
-                    onClick={() => {
-                      setSubmitted(false);
-                      setFormData({ name: '', company: '', mobile: '', product: '', message: '' });
-                      setTouched({ name: false, mobile: false, product: false });
-                      setErrors({});
-                    }}
+                    onClick={resetForm}
                     className="mt-5 text-xs text-slate-400 hover:text-slate-600 underline"
                   >
                     Submit another inquiry
@@ -319,8 +332,10 @@ export default function InquiryForm() {
                       <Select
                         value={formData.product}
                         onValueChange={(value) => {
-                          handleChange('product', value);
-                          handleBlur('product');
+                          setFormData((prev) => ({ ...prev, product: value }));
+                          setTouched((prev) => ({ ...prev, product: true }));
+                          const err = validateField('product', value);
+                          setErrors((prev) => ({ ...prev, product: err || undefined }));
                         }}
                       >
                         <SelectTrigger
@@ -370,7 +385,7 @@ export default function InquiryForm() {
                     <Button
                       type="submit"
                       size="default"
-                      className="w-full bg-green-600 hover:bg-green-700 text-white gap-2 font-bold rounded-xl shadow-md shadow-green-900/20 text-xs py-2.5 h-10"
+                      className="w-full bg-green-600 hover:bg-green-700 text-white gap-2 font-bold rounded-xl shadow-md shadow-green-900/20 text-xs py-2.5 h-10 transition-transform active:scale-[0.98]"
                     >
                       <MessageCircle className="w-3.5 h-3.5" />
                       Send via WhatsApp
@@ -381,7 +396,7 @@ export default function InquiryForm() {
                       size="default"
                       variant="outline"
                       onClick={handleEmailSubmit}
-                      className="w-full border-slate-300 hover:border-[#E86A17] text-slate-800 hover:text-[#E86A17] gap-2 font-bold rounded-xl text-xs py-2.5 h-10"
+                      className="w-full border-slate-300 hover:border-[#E86A17] text-slate-800 hover:text-[#E86A17] gap-2 font-bold rounded-xl text-xs py-2.5 h-10 transition-transform active:scale-[0.98]"
                     >
                       <Mail className="w-3.5 h-3.5 text-[#E86A17]" />
                       Send via Email
