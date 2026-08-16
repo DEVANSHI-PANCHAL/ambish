@@ -2,12 +2,12 @@
 
 import Image from 'next/image';
 import { motion, useInView } from 'motion/react';
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import {
-  History,
   ChevronLeft,
   ChevronRight,
-  Sparkles,
+  Play,
+  Pause,
 } from 'lucide-react';
 
 interface Milestone {
@@ -51,72 +51,130 @@ const MILESTONES: Milestone[] = [
 ];
 
 const HERITAGE_PHOTOS: string[] = [
-  '/heritage/heritage-1.png?v=4',
-  '/heritage/heritage-2.png?v=4',
-  '/heritage/heritage-3.png?v=4',
-  '/heritage/heritage-4.png?v=4',
-  '/heritage/heritage-6.png?v=4',
-  '/heritage/heritage-7.png?v=4',
-  '/heritage/heritage-8.png?v=4',
-  '/heritage/heritage-10.jpeg?v=4',
-  '/heritage/heritage-12.jpeg?v=4',
-  '/heritage/heritage-13.jpeg?v=4',
-  '/heritage/heritage-14.jpeg?v=4',
-  '/heritage/heritage-15.jpeg?v=4',
-  '/heritage/heritage-16.jpeg?v=4',
-  '/heritage/heritage-17.jpeg?v=4',
-  '/heritage/heritage-18.jpeg?v=4',
-  '/heritage/heritage-19.jpeg?v=4',
+  '/heritage/heritage-01.jpeg',
+  '/heritage/heritage-02.png',
+  '/heritage/heritage-03.png',
+  '/heritage/heritage-04.png',
+  '/heritage/heritage-05.png',
+  '/heritage/heritage-06.png',
+  '/heritage/heritage-07.png',
+  '/heritage/heritage-08.png',
+  '/heritage/heritage-09.jpeg',
+  '/heritage/heritage-10.jpeg',
+  '/heritage/heritage-11.jpeg',
+  '/heritage/heritage-12.jpeg',
+  '/heritage/heritage-13.jpeg',
+  '/heritage/heritage-14.jpeg',
+  '/heritage/heritage-15.jpeg',
+  '/heritage/heritage-16.jpeg',
 ];
 
 export default function LegacySection() {
   const ref = useRef(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, amount: 0.1 });
-  const [isPaused, setIsPaused] = useState(false);
 
-  // Repeat for continuous seamless infinite loop
-  const marqueePhotos = [...HERITAGE_PHOTOS, ...HERITAGE_PHOTOS];
+  const [isPlaying, setIsPlaying] = useState(true);
+  const [isHovered, setIsHovered] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [scrollLeftPos, setScrollLeftPos] = useState(0);
+
+  // Smooth continuous auto-scroll loop (gentle, authentic unspooling velocity)
+  useEffect(() => {
+    let animationFrameId: number;
+
+    const autoScroll = () => {
+      if (scrollRef.current && isPlaying && !isHovered && !isDragging) {
+        const container = scrollRef.current;
+        const maxScroll = container.scrollWidth - container.clientWidth;
+
+        if (container.scrollLeft >= maxScroll - 1) {
+          container.scrollLeft = 0;
+        } else {
+          container.scrollLeft += 0.55;
+        }
+      }
+      animationFrameId = requestAnimationFrame(autoScroll);
+    };
+
+    animationFrameId = requestAnimationFrame(autoScroll);
+    return () => cancelAnimationFrame(animationFrameId);
+  }, [isPlaying, isHovered, isDragging]);
+
+  // Navigation handlers
+  const handleScroll = (direction: 'left' | 'right') => {
+    if (scrollRef.current) {
+      const scrollAmount = direction === 'left' ? -380 : 380;
+      scrollRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    }
+  };
+
+  // Drag-to-scroll handlers
+  const handleMouseDown = (e: React.MouseEvent) => {
+    if (!scrollRef.current) return;
+    setIsDragging(true);
+    setStartX(e.pageX - scrollRef.current.offsetLeft);
+    setScrollLeftPos(scrollRef.current.scrollLeft);
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!isDragging || !scrollRef.current) return;
+    e.preventDefault();
+    const x = e.pageX - scrollRef.current.offsetLeft;
+    const walk = (x - startX) * 1.5;
+    scrollRef.current.scrollLeft = scrollLeftPos - walk;
+  };
+
+  const handleMouseUpOrLeave = () => {
+    setIsDragging(false);
+  };
 
   return (
-    <section ref={ref} id="legacy" className="py-14 md:py-18 bg-[#FAF9F6] relative overflow-hidden border-t border-slate-200/60">
+    <section ref={ref} id="legacy" className="py-16 md:py-24 bg-[#FAF9F6] relative overflow-hidden border-t border-stone-200/80">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* Section Header - Editorial Typography */}
+        {/* 🏛️ Heritage Editorial Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 15 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.5 }}
-          className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10 pb-6 border-b border-slate-200"
+          className="max-w-3xl mb-12"
         >
-          <div>
-            <div className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-[#E86A17] mb-2">
-              <History className="w-3.5 h-3.5" />
-              <span>Engineering Heritage</span>
-            </div>
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
-              5 Decades of <span className="text-[#E86A17]"> Trust</span>
-            </h2>
+          {/* Small Archival Label */}
+          <div className="inline-flex items-center gap-2 text-[11px] sm:text-xs font-mono font-bold tracking-widest text-[#E86A17] uppercase mb-3 bg-[#E86A17]/10 px-3 py-1 rounded-full border border-[#E86A17]/20">
+            <span>AMBISH ENGINEERING · EST. 1976</span>
           </div>
-          <p className="text-slate-600 text-sm sm:text-base max-w-md">
-            Established in 1976 in Ahmedabad, building enduring partnerships across three generations of heavy machinery craft.
+
+          {/* Editorial Serif Heading */}
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif font-bold text-slate-950 tracking-tight leading-tight">
+            The Ambish Legacy
+          </h2>
+
+          {/* Supporting Line */}
+          <p className="text-lg sm:text-xl font-serif italic text-[#E86A17] mt-1 mb-3">
+            Captured Through the Years
+          </p>
+
+          {/* Description */}
+          <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
+            From our early manufacturing days to the machinery solutions we provide today, these photographs preserve glimpses of the journey that shaped Ambish Engineering.
           </p>
         </motion.div>
 
-        {/* Architectural Connected Timeline Ribbon (No Clunky Card Boxes) */}
+        {/* 📐 Overall Company Timeline Progression */}
         <motion.div
           initial={{ opacity: 0, y: 15 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.5, delay: 0.15 }}
-          className="mb-12 relative"
+          className="mb-14 relative"
         >
-          {/* Continuous Connecting Track */}
-          <div className="hidden lg:block absolute top-[14px] left-0 right-0 h-[2px] bg-slate-200 z-0" />
+          <div className="hidden lg:block absolute top-[14px] left-0 right-0 h-[2px] bg-stone-200 z-0" />
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 lg:gap-4 relative z-10">
-            {MILESTONES.map((m, idx) => (
+            {MILESTONES.map((m) => (
               <div key={m.year} className="relative pt-6 lg:pt-8 group">
-                {/* Milestone Node on Track */}
-                <div className="hidden lg:flex absolute top-0 left-0 w-7 h-7 rounded-full bg-white border-2 border-slate-300 group-hover:border-[#E86A17] items-center justify-center transition-colors shadow-sm">
-                  <div className="w-2 h-2 rounded-full bg-slate-400 group-hover:bg-[#E86A17] transition-colors" />
+                <div className="hidden lg:flex absolute top-0 left-0 w-7 h-7 rounded-full bg-white border-2 border-stone-300 group-hover:border-[#E86A17] items-center justify-center transition-colors shadow-sm">
+                  <div className="w-2 h-2 rounded-full bg-stone-400 group-hover:bg-[#E86A17] transition-colors" />
                 </div>
 
                 <div className="flex items-baseline gap-2 mb-1">
@@ -138,73 +196,128 @@ export default function LegacySection() {
           </div>
         </motion.div>
 
-        {/* Full-Bleed Archival Photo Strip (Very Very Very Slow Infinite Auto-Scroll) */}
+        {/* 🎞️ HERO 35MM FILM ROLL VISUAL ELEMENT */}
         <motion.div
           initial={{ opacity: 0, y: 15 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.5, delay: 0.25 }}
-          className="bg-slate-950 text-white rounded-2xl p-5 sm:p-6 relative overflow-hidden shadow-xl border border-slate-800"
-          onMouseEnter={() => setIsPaused(true)}
-          onMouseLeave={() => setIsPaused(false)}
+          className="relative w-full group/film"
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => {
+            setIsHovered(false);
+            handleMouseUpOrLeave();
+          }}
         >
-          {/* Header & Controls */}
-          <div className="flex items-center justify-between gap-4 mb-4 pb-3 border-b border-slate-800/80">
-            <div className="flex items-center gap-2">
-              <Sparkles className="w-4 h-4 text-[#E86A17]" />
-              <span className="text-xs uppercase tracking-widest font-bold text-slate-300">
-                Archival Frames: The Ambish Journey Since 1976
-              </span>
-            </div>
+          {/* ⬅️ Elegant Circular Left Navigation Arrow */}
+          <button
+            onClick={() => handleScroll('left')}
+            aria-label="Previous photograph"
+            className="absolute -left-3 sm:-left-5 top-1/2 -translate-y-1/2 z-30 w-11 sm:w-13 h-11 sm:h-13 rounded-full bg-white text-slate-900 hover:bg-[#E86A17] hover:text-white flex items-center justify-center border border-stone-300 shadow-xl transition-all duration-200 hover:scale-110 active:scale-95 cursor-pointer"
+          >
+            <ChevronLeft className="w-5 sm:w-6 h-5 sm:h-6" />
+          </button>
 
-            <div className="text-[11px] font-mono text-slate-400">
-              Hover to pause inspection
-            </div>
-          </div>
+          {/* ➡️ Elegant Circular Right Navigation Arrow */}
+          <button
+            onClick={() => handleScroll('right')}
+            aria-label="Next photograph"
+            className="absolute -right-3 sm:-right-5 top-1/2 -translate-y-1/2 z-30 w-11 sm:w-13 h-11 sm:h-13 rounded-full bg-white text-slate-900 hover:bg-[#E86A17] hover:text-white flex items-center justify-center border border-stone-300 shadow-xl transition-all duration-200 hover:scale-110 active:scale-95 cursor-pointer"
+          >
+            <ChevronRight className="w-5 sm:w-6 h-5 sm:h-6" />
+          </button>
 
-          {/* Infinite Smooth Slow-Motion Carousel */}
-          <div className="relative w-full overflow-hidden select-none py-1">
-            {/* Edge Shadow Masks */}
-            <div className="absolute left-0 top-0 bottom-0 w-8 sm:w-16 bg-gradient-to-r from-slate-950 to-transparent z-10 pointer-events-none" />
-            <div className="absolute right-0 top-0 bottom-0 w-8 sm:w-16 bg-gradient-to-l from-slate-950 to-transparent z-10 pointer-events-none" />
+          {/* Edge Fade Vignettes */}
+          <div className="absolute left-0 top-0 bottom-0 w-10 sm:w-20 bg-gradient-to-r from-[#FAF9F6] via-[#FAF9F6]/80 to-transparent z-20 pointer-events-none rounded-l-xl" />
+          <div className="absolute right-0 top-0 bottom-0 w-10 sm:w-20 bg-gradient-to-l from-[#FAF9F6] via-[#FAF9F6]/80 to-transparent z-20 pointer-events-none rounded-r-xl" />
 
-            <motion.div
-              className="flex gap-4 sm:gap-5 w-max"
-              animate={{
-                x: isPaused ? undefined : ['0%', '-50%'],
-              }}
-              transition={{
-                repeat: Infinity,
-                ease: 'linear',
-                duration: 200, // Ultra slow 160-second loop
-              }}
-            >
-              {marqueePhotos.map((src, idx) => (
-                <div
-                  key={idx}
-                  className="w-60 sm:w-72 flex-shrink-0 bg-white p-2.5 sm:p-3 rounded-2xl shadow-xl shadow-black/40 border border-slate-200/50 group flex flex-col justify-between transition-transform duration-200 hover:-translate-y-1 cursor-pointer"
-                >
-                  {/* Cropped Inset Image Area */}
-                  <div className="relative aspect-[4/3] w-full rounded-xl overflow-hidden bg-slate-100 shadow-inner">
+          {/* 35mm Continuous Film Strip Body */}
+          <div
+            ref={scrollRef}
+            onMouseDown={handleMouseDown}
+            onMouseMove={handleMouseMove}
+            onMouseUp={handleMouseUpOrLeave}
+            className={`flex items-stretch overflow-x-auto gap-0 bg-[#0a0a0c] border-y-[6px] border-black rounded-xl select-none [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden shadow-2xl ${
+              isDragging ? 'cursor-grabbing' : 'cursor-grab'
+            }`}
+          >
+            {HERITAGE_PHOTOS.map((src, idx) => (
+              <div
+                key={idx}
+                className="flex-shrink-0 w-60 sm:w-72 md:w-80 bg-[#0a0a0c] flex flex-col justify-between group relative border-r-[5px] border-black p-0 select-none"
+              >
+                {/* Top Sprocket Perforations Track */}
+                <div className="flex items-center justify-between px-2.5 py-1.5 bg-[#0a0a0c]">
+                  {Array.from({ length: 11 }).map((_, s) => (
+                    <div
+                      key={s}
+                      className="w-2.5 h-3 rounded-[1px] bg-white flex-shrink-0 shadow-sm opacity-90"
+                    />
+                  ))}
+                </div>
+
+                {/* Pure Photographic Frame Window with Sleeker Height & Zoomed-In Details */}
+                <div className="relative aspect-[3/2] w-full bg-black px-1 py-0.5">
+                  <div className="relative w-full h-full overflow-hidden bg-neutral-950 border border-neutral-800 rounded-[2px]">
                     <Image
                       src={src}
-                      alt={`Ambish Engineering Historical Fabrication Archive Frame #${String((idx % HERITAGE_PHOTOS.length) + 1).padStart(2, '0')}`}
+                      alt="Ambish Engineering Historical Archive Photograph"
                       fill
-                      sizes="300px"
-                      quality={82}
+                      sizes="(min-width: 768px) 320px, 260px"
+                      quality={90}
                       decoding="async"
-                      className="object-cover scale-[1.08] group-hover:scale-[1.14] transition-transform duration-300 select-none"
+                      className="object-cover scale-[1.28] group-hover:scale-[1.34] group-hover:brightness-105 transition-all duration-500 select-none"
                       priority={idx < 4}
                     />
                   </div>
-
-                  {/* Subtle Archival Exhibition Stamp */}
-                  <div className="flex items-center justify-between pt-2 px-1 text-[9px] font-mono uppercase tracking-widest text-slate-400 font-semibold select-none">
-                    <span>Archive #{String((idx % HERITAGE_PHOTOS.length) + 1).padStart(2, '0')}</span>
-                    <span className="text-[#E86A17] font-bold">EST. 1976</span>
-                  </div>
                 </div>
-              ))}
-            </motion.div>
+
+                {/* Bottom Sprocket Perforations Track */}
+                <div className="flex items-center justify-between px-2.5 py-1.5 bg-[#0a0a0c]">
+                  {Array.from({ length: 11 }).map((_, s) => (
+                    <div
+                      key={s}
+                      className="w-2.5 h-3 rounded-[1px] bg-white flex-shrink-0 shadow-sm opacity-90"
+                    />
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </motion.div>
+
+        {/* 📜 Bottom Archival Footer Bar */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.5, delay: 0.35 }}
+          className="flex flex-col sm:flex-row items-center justify-between gap-4 mt-6 pt-4 text-xs text-slate-500 font-mono"
+        >
+          {/* General Archival Reference */}
+          <div className="flex items-center gap-2">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#E86A17]" />
+            <span className="font-semibold tracking-wider text-slate-700 uppercase">
+              FROM THE AMBISH ARCHIVES · SINCE 1976
+            </span>
+          </div>
+
+          {/* Play/Pause Control Indicator */}
+          <div className="flex items-center gap-2 text-slate-500 text-[11px]">
+            <button
+              onClick={() => setIsPlaying(!isPlaying)}
+              className="hover:text-slate-900 flex items-center gap-1.5 transition-colors cursor-pointer"
+            >
+              {isPlaying && !isHovered ? (
+                <>
+                  <Pause className="w-3 h-3 text-[#E86A17]" />
+                  <span>Pause Reel</span>
+                </>
+              ) : (
+                <>
+                  <Play className="w-3 h-3 text-emerald-600" />
+                  <span>{isHovered ? 'Paused on Hover' : 'Play Reel'}</span>
+                </>
+              )}
+            </button>
           </div>
         </motion.div>
       </div>
