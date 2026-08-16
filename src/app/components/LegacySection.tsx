@@ -9,6 +9,7 @@ import {
   Play,
   Pause,
 } from 'lucide-react';
+import HERITAGE_PHOTOS from './heritage-photos.json';
 
 interface Milestone {
   year: string;
@@ -48,25 +49,6 @@ const MILESTONES: Milestone[] = [
     title: '50 Years of Excellence',
     description: '3 generations of family-run commitment to rugged reliability and client trust.',
   },
-];
-
-const HERITAGE_PHOTOS: string[] = [
-  '/heritage/heritage-01.jpeg',
-  '/heritage/heritage-02.png',
-  '/heritage/heritage-03.png',
-  '/heritage/heritage-04.png',
-  '/heritage/heritage-05.png',
-  '/heritage/heritage-06.png',
-  '/heritage/heritage-07.png',
-  '/heritage/heritage-08.png',
-  '/heritage/heritage-09.jpeg',
-  '/heritage/heritage-10.jpeg',
-  '/heritage/heritage-11.jpeg',
-  '/heritage/heritage-12.jpeg',
-  '/heritage/heritage-13.jpeg',
-  '/heritage/heritage-14.jpeg',
-  '/heritage/heritage-15.jpeg',
-  '/heritage/heritage-16.jpeg',
 ];
 
 export default function LegacySection() {
@@ -227,37 +209,37 @@ export default function LegacySection() {
           </button>
 
           {/* Edge Fade Vignettes */}
-          <div className="absolute left-0 top-0 bottom-0 w-10 sm:w-20 bg-gradient-to-r from-[#FAF9F6] via-[#FAF9F6]/80 to-transparent z-20 pointer-events-none rounded-l-xl" />
-          <div className="absolute right-0 top-0 bottom-0 w-10 sm:w-20 bg-gradient-to-l from-[#FAF9F6] via-[#FAF9F6]/80 to-transparent z-20 pointer-events-none rounded-r-xl" />
+          <div className="absolute left-0 top-0 bottom-0 w-12 sm:w-24 bg-gradient-to-r from-[#FAF9F6] via-[#FAF9F6]/70 to-transparent z-20 pointer-events-none rounded-l-2xl" />
+          <div className="absolute right-0 top-0 bottom-0 w-12 sm:w-24 bg-gradient-to-l from-[#FAF9F6] via-[#FAF9F6]/70 to-transparent z-20 pointer-events-none rounded-r-2xl" />
 
-          {/* 35mm Continuous Film Strip Body */}
+          {/* 35mm Continuous Film Strip Body - Transparent Warm Vintage Brown */}
           <div
             ref={scrollRef}
             onMouseDown={handleMouseDown}
             onMouseMove={handleMouseMove}
             onMouseUp={handleMouseUpOrLeave}
-            className={`flex items-stretch overflow-x-auto gap-0 bg-[#0a0a0c] border-y-[6px] border-black rounded-xl select-none [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden shadow-2xl ${
+            className={`flex items-stretch overflow-x-auto gap-0 bg-[#2C1810]/85 backdrop-blur-md border-y-[5px] border-[#3D2217] border-x border-[#4E2B1D]/40 rounded-2xl select-none [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden shadow-[0_16px_40px_rgba(44,24,16,0.18)] ${
               isDragging ? 'cursor-grabbing' : 'cursor-grab'
             }`}
           >
             {HERITAGE_PHOTOS.map((src, idx) => (
               <div
                 key={idx}
-                className="flex-shrink-0 w-60 sm:w-72 md:w-80 bg-[#0a0a0c] flex flex-col justify-between group relative border-r-[5px] border-black p-0 select-none"
+                className="flex-shrink-0 w-60 sm:w-72 md:w-80 bg-[#2C1810]/75 flex flex-col justify-between group relative border-r-[4px] border-[#3D2217] p-0 select-none"
               >
                 {/* Top Sprocket Perforations Track */}
-                <div className="flex items-center justify-between px-2.5 py-1.5 bg-[#0a0a0c]">
+                <div className="flex items-center justify-between px-2.5 py-1.5 bg-[#22120C]/60">
                   {Array.from({ length: 11 }).map((_, s) => (
                     <div
                       key={s}
-                      className="w-2.5 h-3 rounded-[1px] bg-white flex-shrink-0 shadow-sm opacity-90"
+                      className="w-2.5 h-3 rounded-[2px] bg-[#FAF9F6]/85 border border-[#3D2217]/40 flex-shrink-0 shadow-inner group-hover:bg-[#FFF8E7] transition-colors"
                     />
                   ))}
                 </div>
 
-                {/* Pure Photographic Frame Window with Sleeker Height & Zoomed-In Details */}
-                <div className="relative aspect-[3/2] w-full bg-black px-1 py-0.5">
-                  <div className="relative w-full h-full overflow-hidden bg-neutral-950 border border-neutral-800 rounded-[2px]">
+                {/* Photographic Frame Window */}
+                <div className="relative aspect-[3/2] w-full bg-[#1F0F09]/60 px-1.5 py-1">
+                  <div className="relative w-full h-full overflow-hidden bg-[#180C07] border border-[#522F20]/50 rounded-[3px] shadow-inner">
                     <Image
                       src={src}
                       alt="Ambish Engineering Historical Archive Photograph"
@@ -272,11 +254,11 @@ export default function LegacySection() {
                 </div>
 
                 {/* Bottom Sprocket Perforations Track */}
-                <div className="flex items-center justify-between px-2.5 py-1.5 bg-[#0a0a0c]">
+                <div className="flex items-center justify-between px-2.5 py-1.5 bg-[#22120C]/60">
                   {Array.from({ length: 11 }).map((_, s) => (
                     <div
                       key={s}
-                      className="w-2.5 h-3 rounded-[1px] bg-white flex-shrink-0 shadow-sm opacity-90"
+                      className="w-2.5 h-3 rounded-[2px] bg-[#FAF9F6]/85 border border-[#3D2217]/40 flex-shrink-0 shadow-inner group-hover:bg-[#FFF8E7] transition-colors"
                     />
                   ))}
                 </div>
